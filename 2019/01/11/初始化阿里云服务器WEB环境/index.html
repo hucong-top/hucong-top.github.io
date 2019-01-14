@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="MarkDown·Blog">
 <meta property="og:description" content="@hucong by Auto Catalog[TOC] 初始化阿里云服务器WEB环境这是一篇针对我公司web环境的初始化教程，仅以MD的方式分享记录此教程，对有同样此需求的同学提供参考 实验环境 阿里云ECS 1核/1g/1m  CentOS 7.3  安装配置JDK环境可以参考我写在CSDN上的一篇教程  CentOS 7.3安装JDK8. 切换yum库为163如需备份请参考163官方文档">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-14T06:37:11.554Z">
+<meta property="og:updated_time" content="2019-01-14T07:54:45.183Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初始化阿里云服务器WEB环境">
 <meta name="twitter:description" content="@hucong by Auto Catalog[TOC] 初始化阿里云服务器WEB环境这是一篇针对我公司web环境的初始化教程，仅以MD的方式分享记录此教程，对有同样此需求的同学提供参考 实验环境 阿里云ECS 1核/1g/1m  CentOS 7.3  安装配置JDK环境可以参考我写在CSDN上的一篇教程  CentOS 7.3安装JDK8. 切换yum库为163如需备份请参考163官方文档">
@@ -218,23 +218,40 @@
 <li>160~162行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;</span><br><span class="line">       prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;</span><br><span class="line">       pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot; /&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="3-可选-tomcat启动慢-有两种解决"><a href="#3-可选-tomcat启动慢-有两种解决" class="headerlink" title="3.(可选)tomcat启动慢 有两种解决"></a>3.(可选)tomcat启动慢 有两种解决</h3><p>1.<strong>在Tomcat环境中解决</strong> 可以通过配置JRE使⽤用⾮非阻塞的Entropy Source。 在catalina.sh中加⼊入这么一行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPTS=&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span><br></pre></td></tr></table></figure></p>
-<p>即可。加⼊入后再启动Tomcat，整个启动耗时迅速下降。<br>2.<strong>在JVM环境中解决</strong> 打开$JAVA_PATH/jre/lib/security/java.security这个⽂文件，找到下⾯面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">securerandom.source=file:/dev/urandom</span><br></pre></td></tr></table></figure></p>
-<p>替换成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">securerandom.source=file:/dev/./urandom</span><br></pre></td></tr></table></figure></p>
-<h3 id="4-后台运行"><a href="#4-后台运行" class="headerlink" title="4.后台运行"></a>4.后台运行</h3><p>⼀般，我们拷贝的⽂件都很⼤，想让scp在后台运⾏。通常我们要建⽴ssh    信任关系。即不输⼊密码就能拷贝，但是通常情况下这样的条件不能满<br>⾜。可以⽤下⾯的⽅法来实现后台运⾏scp：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp remote_username@remote_ip:remote_ﬁle local_folder</span><br></pre></td></tr></table></figure></p>
-<p>输⼊密码，回车。其他指令如下</p>
-<ul>
-<li><p>jobs    //查看任务，返回任务编号n和进程号</p>
+<h3 id="3-运行web服务"><a href="#3-运行web服务" class="headerlink" title="3.运行web服务"></a>3.运行web服务</h3><ul>
+<li><p>运行saas平台</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#sh /usr/local/apache-tomcat-saas/tomcat.sh start</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>bg %n    //将编号为n的任务转后台运⾏行行</p>
-</li>
-<li><p>fg %n    //将编号为n的任务转前台运⾏行行</p>
-</li>
-<li><p>ctrl+z    //挂起当前任务</p>
-</li>
-<li><p>ctrl+c    //结束当前任务</p>
+<li><p>检查运行情况（服务运行于8081端口）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#lsof -i:8081</span><br><span class="line">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">java    1481 root   49u  IPv4  16199      0t0  TCP *:tproxy (LISTEN)</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
+<p>有进程说明启动成功</p>
+<ul>
+<li>检查日志<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#cat /usr/local/apache-tomcat-saas/logs/catalina.20xx-xx-xx.log   //以实际为准</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-可选-tomcat启动慢-有两种解决"><a href="#4-可选-tomcat启动慢-有两种解决" class="headerlink" title="4.(可选)tomcat启动慢 有两种解决"></a>4.(可选)tomcat启动慢 有两种解决</h3><p>1.<strong>在Tomcat环境中解决</strong> 可以通过配置JRE使⽤用非阻塞的Entropy Source。 在catalina.sh中加⼊入这么一行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPTS=&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span><br></pre></td></tr></table></figure></p>
+<p>即可。加⼊入后再启动Tomcat，整个启动耗时迅速下降。<br>2.<strong>在JVM环境中解决</strong> 打开$JAVA_PATH/jre/lib/security/java.security这个⽂文件，找到下⾯面的内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">securerandom.source=file:/dev/urandom</span><br></pre></td></tr></table></figure></p>
+<p>替换成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">securerandom.source=file:/dev/./urandom</span><br></pre></td></tr></table></figure></p>
+<h3 id="5-（可选）后台运行和文件迁移"><a href="#5-（可选）后台运行和文件迁移" class="headerlink" title="5.（可选）后台运行和文件迁移"></a>5.（可选）后台运行和文件迁移</h3><p>⼀般，我们拷贝的⽂件都很⼤，想让scp在后台运⾏。通常我们要建⽴ssh    信任关系。即不输⼊密码就能拷贝，但是通常情况下这样的条件不能满<br>⾜。可以⽤下⾯的⽅法来实现后台运⾏scp：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp remote_username@remote_ip:remote_ﬁle local_folder</span><br></pre></td></tr></table></figure></p>
+<p>输⼊密码，回车。其他指令如下<br>不清楚可查看：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux如何查看、关闭、后台运行任务</a></p>
+<blockquote>
+<ul>
+<li>jobs    //查看任务，返回任务编号n和进程号</li>
+<li>bg %n    //将编号为n的任务转后台运⾏行行</li>
+<li>fg %n    //将编号为n的任务转前台运⾏行行</li>
+<li>ctrl+z    //挂起当前任务</li>
+<li>ctrl+c    //结束当前任务</li>
+</ul>
+</blockquote>
+<ul>
+<li>将测试服务器192.168.1.1的/usr/local/frp文件夹复制到正式服务器192.168.1.2的指定位置/usr/local/app下</li>
+</ul>
+<p>1.使用scp指令通过ssh协议传输<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#scp -r /usr/local/frp root@192.168.1.2:/usr/local/app</span><br></pre></td></tr></table></figure></p>
+<p>提示是否保存密钥，并输入目标服务器的root密码（192.168.1.2），然后任务开始。<br>2.<kbd>Ctrl</kbd>+<kbd>Z</kbd>将任务暂停并挂起到后台：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2]+  Stopped                 scp -r /usr/local/frp/ root@192.168.1.2:/usr/local/app</span><br></pre></td></tr></table></figure></p>
+<p>3.使用bg指令后台运行该任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#bg 2</span><br></pre></td></tr></table></figure></p>
+<p>4.确认该任务状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp/ root@192.168.1.2:/usr/local/app &amp;</span><br></pre></td></tr></table></figure></p>
 
       
 
