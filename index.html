@@ -286,14 +286,17 @@
 </ul>
 <h3 id="2-配置tomcat多项目单实例"><a href="#2-配置tomcat多项目单实例" class="headerlink" title="2.配置tomcat多项目单实例"></a>2.配置tomcat多项目单实例</h3><p>修改Tomcat目录下的conf/server.xml文件的相应位置</p>
 <ul>
-<li><p>69~71行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8089&quot; protocol=&quot;HTTP/1.1&quot;</span><br><span class="line">                connectionTimeout=&quot;20000&quot;</span><br><span class="line">                redirectPort=&quot;8443&quot; URIEncoding=&quot;UTF-8&quot; maxPostSize=&quot;-1&quot; /&gt;</span><br></pre></td></tr></table></figure>
+<li>69~71行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Connector port=&quot;8089&quot; protocol=&quot;HTTP/1.1&quot;</span><br><span class="line">                connectionTimeout=&quot;20000&quot;</span><br><span class="line">                redirectPort=&quot;8443&quot; URIEncoding=&quot;UTF-8&quot; maxPostSize=&quot;-1&quot; /&gt;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>148~150行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;Host name=&quot;localhost&quot;  appBase=&quot;&quot;</span><br><span class="line">            unpackWARs=&quot;true&quot; autoDeploy=&quot;false&quot;&gt;</span><br><span class="line">&lt;Context path=&quot;&quot; docBase=&quot;/data/saas/saas.war&quot;  reloadable=&quot;true&quot; crossContext=&quot;true&quot;/&gt;</span><br></pre></td></tr></table></figure>
+</ul>
+<p><em>注：Connector port=”8089” 不能冲突，按实际修改</em></p>
+<ul>
+<li>148~150行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> &lt;Host name=&quot;localhost&quot;  appBase=&quot;&quot;</span><br><span class="line">            unpackWARs=&quot;true&quot; autoDeploy=&quot;false&quot;&gt;</span><br><span class="line">&lt;Context path=&quot;&quot; docBase=&quot;/data/saas/saas.war&quot;  reloadable=&quot;true&quot; crossContext=&quot;true&quot;/&gt;</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>160~162行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;</span><br><span class="line">       prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;</span><br><span class="line">       pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot; /&gt;</span><br></pre></td></tr></table></figure>
+</ul>
+<p><em>注：docBase=/data/saas/saas.war为当前环境下项目包.war所在地址</em></p>
+<ul>
+<li>160~162行<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;Valve className=&quot;org.apache.catalina.valves.AccessLogValve&quot; directory=&quot;logs&quot;</span><br><span class="line">       prefix=&quot;localhost_access_log&quot; suffix=&quot;.txt&quot;</span><br><span class="line">       pattern=&quot;%h %l %u %t &amp;quot;%r&amp;quot; %s %b&quot; /&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
 <h3 id="3-可选-tomcat启动慢-有两种解决"><a href="#3-可选-tomcat启动慢-有两种解决" class="headerlink" title="3.(可选)tomcat启动慢 有两种解决"></a>3.(可选)tomcat启动慢 有两种解决</h3><p>1.<strong>在Tomcat环境中解决</strong> 可以通过配置JRE使⽤用⾮非阻塞的Entropy Source。 在catalina.sh中加⼊入这么一行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_OPTS=&quot;-Djava.security.egd=file:/dev/./urandom&quot;</span><br></pre></td></tr></table></figure></p>
