@@ -296,6 +296,92 @@
 
 
   
+    <article id="post-private/canal手册" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/14/private/canal手册/">topic</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/14/private/canal手册/" class="archive-article-date">
+  	<time datetime="2019-01-14T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@hucong <!--注释：初始化阿里云服务器WEB环境--><br><em>by Auto Catalog</em><br>[TOC]</p>
+<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>排查措施：检查对应位置的binlog值是否一致</li>
+</ul>
+<p>1.首先停止canal服务器，记录canal服务端的binlog值,配置文件在canal的conf目录下对应项目的meta.dat文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim usr/local/canal/conf/example/meta.dat</span><br></pre></td></tr></table></figure>
+<p>找到对应的binlog信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;journalName&quot;:&quot;mysql-bin.000001&quot;,&quot;position&quot;:43581207,&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.记录canal服务器所在的MySQL节点信息</p>
+<p>进入MySQL命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| mysql-bin.000002 | 6399145 |              |                 |                  |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">1 row in set (0.09 sec)</span><br></pre></td></tr></table></figure>
+<p>发现file名称和position值都不匹配，解决方法有两种：</p>
+<ul>
+<li>替换：将meta.dat中的binlog信息改为和MySQL一致</li>
+<li>重置：清空MySQL中binlog信息（position不一定为0），然后将meta.dat中的binlog信息改为和MySQL一致</li>
+</ul>
+<p>测试过程中<strong>重置</strong>的方法基本都能解决大多数问题</p>
+<p><em>binlog重置方法：在MySQL命令模式下</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure></p>
+<h2 id="在Linux上运行canal-receiver客户端"><a href="#在Linux上运行canal-receiver客户端" class="headerlink" title="在Linux上运行canal-receiver客户端"></a>在Linux上运行canal-receiver客户端</h2><p>1.安装配置jdk和maven环境，可以查看<a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装配置JDK8+Maven</a></p>
+<p>2.拉取canal-receiver代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://gitee.com/xingcyun/canal-receiver.git       //yum install -y git</span><br></pre></td></tr></table></figure></p>
+<p>3.编译代码,在canal-receiver目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn clean</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
+<p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
+<p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/14/private/canal手册/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-初始化阿里云服务器WEB环境" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     

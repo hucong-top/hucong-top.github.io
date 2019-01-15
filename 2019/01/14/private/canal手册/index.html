@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Linux查看、关闭、后台运行任务 | MarkDown·Blog</title>
+  <title>topic | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@胡聪by Auto Catalog[TOC]参考于:linux后台运行和关闭、查看后台任务常用的&amp;amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解">
+  <meta name="description" content="@hucong by Auto Catalog[TOC] canal问题总结重置canal中binlog信息通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的123456789101112132019-01-15 10:52:20.941 [New I/O server work">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux查看、关闭、后台运行任务">
-<meta property="og:url" content="http://yoursite.com/2019/01/14/Linux查看、关闭、后台运行任务/index.html">
+<meta property="og:title" content="topic">
+<meta property="og:url" content="http://yoursite.com/2019/01/14/private/canal手册/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="@胡聪by Auto Catalog[TOC]参考于:linux后台运行和关闭、查看后台任务常用的&amp;amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解">
+<meta property="og:description" content="@hucong by Auto Catalog[TOC] canal问题总结重置canal中binlog信息通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的123456789101112132019-01-15 10:52:20.941 [New I/O server work">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-14T12:42:56.970Z">
+<meta property="og:updated_time" content="2019-01-15T08:18:01.397Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux查看、关闭、后台运行任务">
-<meta name="twitter:description" content="@胡聪by Auto Catalog[TOC]参考于:linux后台运行和关闭、查看后台任务常用的&amp;amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解">
+<meta name="twitter:title" content="topic">
+<meta name="twitter:description" content="@hucong by Auto Catalog[TOC] canal问题总结重置canal中binlog信息通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的123456789101112132019-01-15 10:52:20.941 [New I/O server work">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
   
@@ -162,19 +162,19 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Linux查看、关闭、后台运行任务" class="article article-type-post " itemscope="" itemprop="blogPost">
+            <article id="post-private/canal手册" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Linux查看、关闭、后台运行任务
+      topic
     </h1>
   
 
         
-        <a href="/2019/01/14/Linux查看、关闭、后台运行任务/" class="archive-article-date">
+        <a href="/2019/01/14/private/canal手册/" class="archive-article-date">
   	<time datetime="2019-01-14T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
 </a>
         
@@ -182,42 +182,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><em>@胡聪</em><br><em>by Auto Catalog</em><br>[TOC]<br><em>参考于:<a href="https://www.cnblogs.com/kaituorensheng/p/3980334.html" target="_blank" rel="noopener">linux后台运行和关闭、查看后台任务</a></em><br>常用的&amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解<br><a id="more"></a> </p>
-<h1 id="Linux下将指令后台运行、关闭、查看任务"><a href="#Linux下将指令后台运行、关闭、查看任务" class="headerlink" title="Linux下将指令后台运行、关闭、查看任务"></a>Linux下将指令后台运行、关闭、查看任务</h1><h3 id="1-amp"><a href="#1-amp" class="headerlink" title="1.&amp;"></a>1.<kbd>&amp;</kbd></h3><p>直接加到指令的后面，就可以将该条指令放到后台运行，不建议在还需要交互的指令上使用&amp;，会直接忽略（比如输入密码确认）</p>
+        <p>@hucong <!--注释：初始化阿里云服务器WEB环境--><br><em>by Auto Catalog</em><br>[TOC]</p>
+<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
 <ul>
-<li>运行java程序canal-receiver<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#java -jar canal-receiver.jar start 1 &amp;    //执行一个java程序</span><br></pre></td></tr></table></figure>
-</li>
+<li>排查措施：检查对应位置的binlog值是否一致</li>
 </ul>
-<h3 id="2-Ctrl-Z"><a href="#2-Ctrl-Z" class="headerlink" title="2.Ctrl +Z"></a>2.<kbd>Ctrl</kbd> +<kbd>Z</kbd></h3><p>可以将一个正在前台执行的命令放到后台，并且处于暂停状态</p>
+<p>1.首先停止canal服务器，记录canal服务端的binlog值,配置文件在canal的conf目录下对应项目的meta.dat文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim usr/local/canal/conf/example/meta.dat</span><br></pre></td></tr></table></figure>
+<p>找到对应的binlog信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;journalName&quot;:&quot;mysql-bin.000001&quot;,&quot;position&quot;:43581207,&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.记录canal服务器所在的MySQL节点信息</p>
+<p>进入MySQL命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| mysql-bin.000002 | 6399145 |              |                 |                  |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">1 row in set (0.09 sec)</span><br></pre></td></tr></table></figure>
+<p>发现file名称和position值都不匹配，解决方法有两种：</p>
 <ul>
-<li>将本机上的/usr/local/frp_server/文件夹复制到39.98.41.26的/usr/local/目录下</li>
+<li>替换：将meta.dat中的binlog信息改为和MySQL一致</li>
+<li>重置：清空MySQL中binlog信息（position不一定为0），然后将meta.dat中的binlog信息改为和MySQL一致</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
-<ul>
-<li>此时复制开始，并占用当前界面，可以用<kbd>Ctrl</kbd> +<kbd>Z</kbd>放到后台</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
-<p>&ensp;[命令号] + 状态    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 执行指令 </p>
-<h3 id="3-jobs"><a href="#3-jobs" class="headerlink" title="3.jobs"></a>3.<kbd>jobs</kbd></h3><p>查看当前有多少在后台运行的命令</p>
-<p>jobs -l选项可显示所有任务的PID，jobs的状态可以是running, stopped, Terminated。但是如果任务被终止了（kill），shell 从当前的shell环境已知的列表中删除任务的进程标识。</p>
-<h3 id="4-fg"><a href="#4-fg" class="headerlink" title="4.fg"></a>4.<kbd>fg</kbd></h3><p>将后台中的命令调至前台继续运行。如果后台中有多个命令，可以用fg %jobnumber（是命令编号，不是进程号）将选中的命令调出。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># job -l               //查看后台任务</span><br><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br><span class="line">#fg 2                 //调起scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/指令，并在前台运行</span><br></pre></td></tr></table></figure></p>
-<h3 id="5-bg"><a href="#5-bg" class="headerlink" title="5.bg"></a>5.<kbd>bg</kbd></h3><p>将一个在后台暂停的命令，变成在后台继续执行。如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出。</p>
-<ul>
-<li><p>查看后台任务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># job -l               </span><br><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>调起scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/指令，并在后台运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#bg 2              </span><br><span class="line">[2]+ scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>确认状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="6-kill"><a href="#6-kill" class="headerlink" title="6.kill"></a>6.<kbd>kill</kbd></h3><p>用法1：通过jobs命令查看job号（假设为num），然后执行kill %num<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br><span class="line">#kill 24233</span><br><span class="line">Killed by signal 15.</span><br></pre></td></tr></table></figure></p>
-<p>用法2：通过ps命令查看job的进程号（PID，假设为pid），然后执行kill pid<br><em>注：<a href="https://blog.csdn.net/freeking101/article/details/53444530" target="_blank" rel="noopener">ps命令详解</a></em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ps -aux            //a:显示所有程序 u:以用户为主的格式来显示 x:显示所有程序，不以终端机来区分</span><br><span class="line">root     24271  0.0  0.0  57700  2184 pts/0    S    11:53   0:00 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br><span class="line">#kill 24271</span><br><span class="line">Killed by signal 15.</span><br></pre></td></tr></table></figure></p>
-<h3 id="7-nohup"><a href="#7-nohup" class="headerlink" title="7.nohup"></a>7.<kbd>nohup</kbd></h3><p>如果让程序始终在后台执行，即使关闭当前的终端也执行（之前的&amp;做不到），这时候需要nohup。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。关闭中断后，在另一个终端jobs已经无法看到后台跑得程序了，此时利用ps（进程查看命令）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#nohup java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure>
-<h3 id="8-Ctrl-C"><a href="#8-Ctrl-C" class="headerlink" title="8.Ctrl+C"></a>8.<kbd>Ctrl</kbd>+<kbd>C</kbd></h3><p>前台进程的终止</p>
+<p>测试过程中<strong>重置</strong>的方法基本都能解决大多数问题</p>
+<p><em>binlog重置方法：在MySQL命令模式下</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure></p>
+<h2 id="在Linux上运行canal-receiver客户端"><a href="#在Linux上运行canal-receiver客户端" class="headerlink" title="在Linux上运行canal-receiver客户端"></a>在Linux上运行canal-receiver客户端</h2><p>1.安装配置jdk和maven环境，可以查看<a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装配置JDK8+Maven</a></p>
+<p>2.拉取canal-receiver代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://gitee.com/xingcyun/canal-receiver.git       //yum install -y git</span><br></pre></td></tr></table></figure></p>
+<p>3.编译代码,在canal-receiver目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn clean</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
+<p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
+<p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
 
       
 
@@ -297,7 +285,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/01/14/Linux查看、关闭、后台运行任务/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/01/14/private/canal手册/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -311,18 +299,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/01/14/Devops/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/01/14/Linux查看、关闭、后台运行任务/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Devops
+          Linux查看、关闭、后台运行任务
         
       </div>
     </a>
   
   
-    <a href="/2019/01/14/private/canal手册/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">topic</div>
+    <a href="/2019/01/11/初始化阿里云服务器WEB环境/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">初始化阿里云服务器WEB环境</div>
       <i class="icon-circle-right"></i>
     </a>
   
