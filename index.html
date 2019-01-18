@@ -217,13 +217,15 @@
 </li>
 </ul>
 <p><em>注:zookeeper端口2181；kafka端口9092</em></p>
-<p>##canal问题排查<br>问题1</p>
+<p>##canal问题排查</p>
+<p><strong>问题1：</strong></p>
 <blockquote>
 <p>ERROR c.a.otter.canal.parse.inbound.mysql.MysqlEventParser - dump address /192.168.1.50:3306 has an error, retrying. caused by<br>com.alibaba.otter.canal.parse.exception.CanalParseException: can’t find start position for example</p>
 </blockquote>
 <p>原因:meta.dat 中保存的位点信息和数据库的位点信息不一致；导致canal抓取不到数据库的动作；</p>
 <p>解决方案：删除meta.dat删除，再重启canal，问题解决；</p>
-<p>集群操作：进入canal对应的zookeeper集群下，删除节点/otter/canal/destinations/xxxxx/1001/cursor ；重启canal即可恢复；<br>问题2</p>
+<p>集群操作：进入canal对应的zookeeper集群下，删除节点/otter/canal/destinations/xxxxx/1001/cursor ；重启canal即可恢复；</p>
+<p><strong>问题2：</strong></p>
 <blockquote>
 <p>java.lang.OutOfMemoryError: Java heap space</p>
 </blockquote>
@@ -231,14 +233,14 @@
 <p><code>/otter/canal/destinations/test_db/1001/cursor</code> 位点信息是很早以前，导致重启canal时，从很早以前的位点开始消费，导致canal服务器内存爆掉</p>
 <p>监听数据库变更，只有TransactionBegin/TransactionEnd,没有拿到数据的EventType；</p>
 <p>原因可能是canal.instance.filter.black.regex=.<em>\..</em>导致，改canal.instance.filter.black.regex=再重启试试；</p>
-<p>问题3：</p>
+<p><strong>问题3：</strong></p>
 <blockquote>
 <p>ERROR com.alibaba.otter.canal.common.alarm.LogAlarmHandler - destination:fdyb_db[com.alibaba.otter.canal.parse.exception.CanalParseException: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: java.io.IOException: ErrorPacket [errorNumber=1142, fieldCount=-1, message=SELECT command denied to user ‘cy_canal‘@’11.217.0.224’ for table ‘pds_4490277’, sqlState=42000, sqlStateMarker=#]<br>with command: desc <code>mysql</code>.<code>pds_4490277</code></p>
 </blockquote>
 <p>分析：mysql系统表权限较高，canal读该表的binlog失败，位点无法移动</p>
 <p>解决：将配置项中黑名单加上mysql下的所有表：canal.instance.filter.black.regex = mysql\..* ，修改后canal集群不需要重启即可恢复；</p>
 <p>其它注意点：检查下CanalConnector是否调用subscribe(filter)方法；有的话，filter需要和instance.properties的canal.instance.filter.regex一致，否则subscribe的filter会覆盖instance的配置，如果subscribe的filter是.<em>\..</em>，那么相当于你消费了所有的更新数据。</p>
-<p>问题四：</p>
+<p><strong>问题4：</strong></p>
 <blockquote>
 <p>现象：数据库修改后，canal应用感知不到binlog，数据无法正常消费处理；</p>
 </blockquote>
