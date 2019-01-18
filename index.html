@@ -160,6 +160,260 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-canal-help" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/18/canal-help/">topic</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/18/canal-help/" class="archive-article-date">
+  	<time datetime="2019-01-18T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@hucong <!--注释：canal问题总结--><br><em>by Auto Catalog</em><br>[TOC]</p>
+<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>排查措施：检查对应位置的binlog值是否一致</li>
+</ul>
+<p>1.首先停止canal服务器，记录canal服务端的binlog值,配置文件在canal的conf目录下对应项目的meta.dat文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim usr/local/canal/conf/example/meta.dat</span><br></pre></td></tr></table></figure>
+<p>找到对应的binlog信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;journalName&quot;:&quot;mysql-bin.000001&quot;,&quot;position&quot;:43581207,&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.记录canal服务器所在的MySQL节点信息</p>
+<p>进入MySQL命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| mysql-bin.000002 | 6399145 |              |                 |                  |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">1 row in set (0.09 sec)</span><br></pre></td></tr></table></figure>
+<p>发现file名称和position值都不匹配，解决方法有两种：</p>
+<ul>
+<li>替换：将meta.dat中的binlog信息改为和MySQL一致</li>
+<li>重置：清空MySQL中binlog信息（position不一定为0），然后将meta.dat中的binlog信息改为和MySQL一致</li>
+</ul>
+<p>测试过程中<strong>重置</strong>的方法基本都能解决大多数问题</p>
+<p><em>binlog重置方法：在MySQL命令模式下</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure></p>
+<h2 id="在Linux上运行canal-receiver客户端"><a href="#在Linux上运行canal-receiver客户端" class="headerlink" title="在Linux上运行canal-receiver客户端"></a>在Linux上运行canal-receiver客户端</h2><p>1.安装配置jdk和maven环境，可以查看<a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装配置JDK8+Maven</a></p>
+<p>2.拉取canal-receiver代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://gitee.com/xingcyun/canal-receiver.git       //yum install -y git</span><br></pre></td></tr></table></figure></p>
+<p>3.编译代码,在canal-receiver目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn clean</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
+<p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
+<p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
+<h2 id="canal设置"><a href="#canal设置" class="headerlink" title="canal设置"></a>canal设置</h2><p>###无MQ下canal<br>设置对应文件的instance.properties(默认example)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim conf/example/instance.properties</span><br></pre></td></tr></table></figure></p>
+<p>修改以下配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure></p>
+<p>###canal+kafka配置</p>
+<ul>
+<li>instance.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line"></span><br><span class="line"># mq config</span><br><span class="line">canal.mq.topic=TopicReceiver           </span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>注：canal.mq.topic与实际创建的为准</em></p>
+<ul>
+<li>canal.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">canal.zkServers =39.98.41.26:2181</span><br><span class="line"></span><br><span class="line"># tcp, kafka, RocketMQ</span><br><span class="line">canal.serverMode = kafka</span><br><span class="line"></span><br><span class="line">canal.destinations = example</span><br><span class="line"></span><br><span class="line">canal.mq.servers = 39.98.41.26:9092</span><br><span class="line">canal.mq.retries = 0</span><br><span class="line">canal.mq.batchSize = 16384</span><br><span class="line">canal.mq.maxRequestSize = 1048576</span><br><span class="line">canal.mq.lingerMs = 1</span><br><span class="line">canal.mq.bufferMemory = 33554432</span><br><span class="line">canal.mq.canalBatchSize = 50</span><br><span class="line">canal.mq.canalGetTimeout = 100</span><br><span class="line">canal.mq.flatMessage = true</span><br><span class="line">canal.mq.compressionType = none</span><br><span class="line">canal.mq.acks = all</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>注:zookeeper端口2181；kafka端口9092</em></p>
+<p>##canal问题排查<br>问题1</p>
+<blockquote>
+<p>ERROR c.a.otter.canal.parse.inbound.mysql.MysqlEventParser - dump address /192.168.1.50:3306 has an error, retrying. caused by<br>com.alibaba.otter.canal.parse.exception.CanalParseException: can’t find start position for example</p>
+</blockquote>
+<p>原因:meta.dat 中保存的位点信息和数据库的位点信息不一致；导致canal抓取不到数据库的动作；</p>
+<p>解决方案：删除meta.dat删除，再重启canal，问题解决；</p>
+<p>集群操作：进入canal对应的zookeeper集群下，删除节点/otter/canal/destinations/xxxxx/1001/cursor ；重启canal即可恢复；<br>问题2</p>
+<blockquote>
+<p>java.lang.OutOfMemoryError: Java heap space</p>
+</blockquote>
+<p>canal消费端挂了太久，在zk对应conf下节点的</p>
+<p><code>/otter/canal/destinations/test_db/1001/cursor</code> 位点信息是很早以前，导致重启canal时，从很早以前的位点开始消费，导致canal服务器内存爆掉</p>
+<p>监听数据库变更，只有TransactionBegin/TransactionEnd,没有拿到数据的EventType；</p>
+<p>原因可能是canal.instance.filter.black.regex=.<em>\..</em>导致，改canal.instance.filter.black.regex=再重启试试；</p>
+<p>问题3：</p>
+<blockquote>
+<p>ERROR com.alibaba.otter.canal.common.alarm.LogAlarmHandler - destination:fdyb_db[com.alibaba.otter.canal.parse.exception.CanalParseException: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: java.io.IOException: ErrorPacket [errorNumber=1142, fieldCount=-1, message=SELECT command denied to user ‘cy_canal‘@’11.217.0.224’ for table ‘pds_4490277’, sqlState=42000, sqlStateMarker=#]<br>with command: desc <code>mysql</code>.<code>pds_4490277</code></p>
+</blockquote>
+<p>分析：mysql系统表权限较高，canal读该表的binlog失败，位点无法移动</p>
+<p>解决：将配置项中黑名单加上mysql下的所有表：canal.instance.filter.black.regex = mysql\..* ，修改后canal集群不需要重启即可恢复；</p>
+<p>其它注意点：检查下CanalConnector是否调用subscribe(filter)方法；有的话，filter需要和instance.properties的canal.instance.filter.regex一致，否则subscribe的filter会覆盖instance的配置，如果subscribe的filter是.<em>\..</em>，那么相当于你消费了所有的更新数据。</p>
+<p>问题四：</p>
+<blockquote>
+<p>现象：数据库修改后，canal应用感知不到binlog，数据无法正常消费处理；</p>
+</blockquote>
+<p>定位：1.查看canal服务器，canal应用，zk服务器的日志，确认无异常；2.查看mysql,es服务器，无异常，3.查看canal服务器，canal应用配置项，发现canal服务器的canal.properties有问题；</p>
+<p>原因：canal.properties中配置了canal.ip和canal.zkServers，如果是zk集群模式下的canal配置了canal.ip，则会优先按IP连接canal服务器，从而让zk功能失效，位点文件则会保存到本地；一旦本地位点文件出现问题，各方无错误日志，问题就很难排查；</p>
+<p>解决：将canal.ip配置项置为空，关掉canal服务器，canal应用，删除zk上的节点，重启canal服务器，canal应用，问题解决；</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/18/canal-help/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-private/canal-help" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/18/private/canal-help/">topic</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/18/private/canal-help/" class="archive-article-date">
+  	<time datetime="2019-01-18T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@hucong <!--注释：canal问题总结--><br><em>by Auto Catalog</em><br>[TOC]</p>
+<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>排查措施：检查对应位置的binlog值是否一致</li>
+</ul>
+<p>1.首先停止canal服务器，记录canal服务端的binlog值,配置文件在canal的conf目录下对应项目的meta.dat文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim usr/local/canal/conf/example/meta.dat</span><br></pre></td></tr></table></figure>
+<p>找到对应的binlog信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;journalName&quot;:&quot;mysql-bin.000001&quot;,&quot;position&quot;:43581207,&quot;</span><br></pre></td></tr></table></figure></p>
+<p>2.记录canal服务器所在的MySQL节点信息</p>
+<p>进入MySQL命令行模式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| mysql-bin.000002 | 6399145 |              |                 |                  |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">1 row in set (0.09 sec)</span><br></pre></td></tr></table></figure>
+<p>发现file名称和position值都不匹配，解决方法有两种：</p>
+<ul>
+<li>替换：将meta.dat中的binlog信息改为和MySQL一致</li>
+<li>重置：清空MySQL中binlog信息（position不一定为0），然后将meta.dat中的binlog信息改为和MySQL一致</li>
+</ul>
+<p>测试过程中<strong>重置</strong>的方法基本都能解决大多数问题</p>
+<p><em>binlog重置方法：在MySQL命令模式下</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure></p>
+<h2 id="在Linux上运行canal-receiver客户端"><a href="#在Linux上运行canal-receiver客户端" class="headerlink" title="在Linux上运行canal-receiver客户端"></a>在Linux上运行canal-receiver客户端</h2><p>1.安装配置jdk和maven环境，可以查看<a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装配置JDK8+Maven</a></p>
+<p>2.拉取canal-receiver代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://gitee.com/xingcyun/canal-receiver.git       //yum install -y git</span><br></pre></td></tr></table></figure></p>
+<p>3.编译代码,在canal-receiver目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn clean</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
+<p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
+<p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
+<h2 id="canal设置"><a href="#canal设置" class="headerlink" title="canal设置"></a>canal设置</h2><p>###无MQ下canal<br>设置对应文件的instance.properties(默认example)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim conf/example/instance.properties</span><br></pre></td></tr></table></figure></p>
+<p>修改以下配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure></p>
+<p>###canal+kafka配置</p>
+<ul>
+<li>instance.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line"></span><br><span class="line"># mq config</span><br><span class="line">canal.mq.topic=TopicReceiver           </span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>注：canal.mq.topic与实际创建的为准</em></p>
+<ul>
+<li>canal.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">canal.zkServers =39.98.41.26:2181</span><br><span class="line"></span><br><span class="line"># tcp, kafka, RocketMQ</span><br><span class="line">canal.serverMode = kafka</span><br><span class="line"></span><br><span class="line">canal.destinations = example</span><br><span class="line"></span><br><span class="line">canal.mq.servers = 39.98.41.26:9092</span><br><span class="line">canal.mq.retries = 0</span><br><span class="line">canal.mq.batchSize = 16384</span><br><span class="line">canal.mq.maxRequestSize = 1048576</span><br><span class="line">canal.mq.lingerMs = 1</span><br><span class="line">canal.mq.bufferMemory = 33554432</span><br><span class="line">canal.mq.canalBatchSize = 50</span><br><span class="line">canal.mq.canalGetTimeout = 100</span><br><span class="line">canal.mq.flatMessage = true</span><br><span class="line">canal.mq.compressionType = none</span><br><span class="line">canal.mq.acks = all</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><em>注:zookeeper端口2181；kafka端口9092</em></p>
+<p>##canal问题排查<br>问题1</p>
+<blockquote>
+<p>ERROR c.a.otter.canal.parse.inbound.mysql.MysqlEventParser - dump address /192.168.1.50:3306 has an error, retrying. caused by<br>com.alibaba.otter.canal.parse.exception.CanalParseException: can’t find start position for example</p>
+</blockquote>
+<p>原因:meta.dat 中保存的位点信息和数据库的位点信息不一致；导致canal抓取不到数据库的动作；</p>
+<p>解决方案：删除meta.dat删除，再重启canal，问题解决；</p>
+<p>集群操作：进入canal对应的zookeeper集群下，删除节点/otter/canal/destinations/xxxxx/1001/cursor ；重启canal即可恢复；<br>问题2</p>
+<blockquote>
+<p>java.lang.OutOfMemoryError: Java heap space</p>
+</blockquote>
+<p>canal消费端挂了太久，在zk对应conf下节点的</p>
+<p><code>/otter/canal/destinations/test_db/1001/cursor</code> 位点信息是很早以前，导致重启canal时，从很早以前的位点开始消费，导致canal服务器内存爆掉</p>
+<p>监听数据库变更，只有TransactionBegin/TransactionEnd,没有拿到数据的EventType；</p>
+<p>原因可能是canal.instance.filter.black.regex=.<em>\..</em>导致，改canal.instance.filter.black.regex=再重启试试；</p>
+<p>问题3：</p>
+<blockquote>
+<p>ERROR com.alibaba.otter.canal.common.alarm.LogAlarmHandler - destination:fdyb_db[com.alibaba.otter.canal.parse.exception.CanalParseException: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: parse row data failed.<br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.google.common.collect.ComputationException: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: com.alibaba.otter.canal.parse.exception.CanalParseException: fetch failed by table meta:<code>mysql</code>.<code>pds_4490277</code><br>Caused by: java.io.IOException: ErrorPacket [errorNumber=1142, fieldCount=-1, message=SELECT command denied to user ‘cy_canal‘@’11.217.0.224’ for table ‘pds_4490277’, sqlState=42000, sqlStateMarker=#]<br>with command: desc <code>mysql</code>.<code>pds_4490277</code></p>
+</blockquote>
+<p>分析：mysql系统表权限较高，canal读该表的binlog失败，位点无法移动</p>
+<p>解决：将配置项中黑名单加上mysql下的所有表：canal.instance.filter.black.regex = mysql\..* ，修改后canal集群不需要重启即可恢复；</p>
+<p>其它注意点：检查下CanalConnector是否调用subscribe(filter)方法；有的话，filter需要和instance.properties的canal.instance.filter.regex一致，否则subscribe的filter会覆盖instance的配置，如果subscribe的filter是.<em>\..</em>，那么相当于你消费了所有的更新数据。</p>
+<p>问题四：</p>
+<blockquote>
+<p>现象：数据库修改后，canal应用感知不到binlog，数据无法正常消费处理；</p>
+</blockquote>
+<p>定位：1.查看canal服务器，canal应用，zk服务器的日志，确认无异常；2.查看mysql,es服务器，无异常，3.查看canal服务器，canal应用配置项，发现canal服务器的canal.properties有问题；</p>
+<p>原因：canal.properties中配置了canal.ip和canal.zkServers，如果是zk集群模式下的canal配置了canal.ip，则会优先按IP连接canal服务器，从而让zk功能失效，位点文件则会保存到本地；一旦本地位点文件出现问题，各方无错误日志，问题就很难排查；</p>
+<p>解决：将canal.ip配置项置为空，关掉canal服务器，canal应用，删除zk上的节点，重启canal服务器，canal应用，问题解决；</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/18/private/canal-help/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Devops" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -262,105 +516,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/01/14/Linux查看、关闭、后台运行任务/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-private/canal-help" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/private/canal-help/">topic</a>
-    </h1>
-  
-
-        
-        <a href="/2019/01/14/private/canal-help/" class="archive-article-date">
-  	<time datetime="2019-01-14T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>@hucong <!--注释：初始化阿里云服务器WEB环境--><br><em>by Auto Catalog</em><br>[TOC]</p>
-<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>排查措施：检查对应位置的binlog值是否一致</li>
-</ul>
-<p>1.首先停止canal服务器，记录canal服务端的binlog值,配置文件在canal的conf目录下对应项目的meta.dat文件中</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim usr/local/canal/conf/example/meta.dat</span><br></pre></td></tr></table></figure>
-<p>找到对应的binlog信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;journalName&quot;:&quot;mysql-bin.000001&quot;,&quot;position&quot;:43581207,&quot;</span><br></pre></td></tr></table></figure></p>
-<p>2.记录canal服务器所在的MySQL节点信息</p>
-<p>进入MySQL命令行模式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">| mysql-bin.000002 | 6399145 |              |                 |                  |</span><br><span class="line">+-----------------+---------+--------------+-----------------+------------------+</span><br><span class="line">1 row in set (0.09 sec)</span><br></pre></td></tr></table></figure>
-<p>发现file名称和position值都不匹配，解决方法有两种：</p>
-<ul>
-<li>替换：将meta.dat中的binlog信息改为和MySQL一致</li>
-<li>重置：清空MySQL中binlog信息（position不一定为0），然后将meta.dat中的binlog信息改为和MySQL一致</li>
-</ul>
-<p>测试过程中<strong>重置</strong>的方法基本都能解决大多数问题</p>
-<p><em>binlog重置方法：在MySQL命令模式下</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; reset master;</span><br></pre></td></tr></table></figure></p>
-<h2 id="在Linux上运行canal-receiver客户端"><a href="#在Linux上运行canal-receiver客户端" class="headerlink" title="在Linux上运行canal-receiver客户端"></a>在Linux上运行canal-receiver客户端</h2><p>1.安装配置jdk和maven环境，可以查看<a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装配置JDK8+Maven</a></p>
-<p>2.拉取canal-receiver代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://gitee.com/xingcyun/canal-receiver.git       //yum install -y git</span><br></pre></td></tr></table></figure></p>
-<p>3.编译代码,在canal-receiver目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn clean</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
-<p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
-<p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
-<h2 id="canal设置"><a href="#canal设置" class="headerlink" title="canal设置"></a>canal设置</h2><p>###无MQ下canal<br>设置对应文件的instance.properties(默认example)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim conf/example/instance.properties</span><br></pre></td></tr></table></figure></p>
-<p>修改以下配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure></p>
-<p>###canal+kafka配置</p>
-<ul>
-<li>instance.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line"></span><br><span class="line"># mq config</span><br><span class="line">canal.mq.topic=TopicReceiver           </span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><em>注：canal.mq.topic与实际创建的为准</em></p>
-<ul>
-<li>canal.properties<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">canal.zkServers =39.98.41.26:2181</span><br><span class="line"></span><br><span class="line"># tcp, kafka, RocketMQ</span><br><span class="line">canal.serverMode = kafka</span><br><span class="line"></span><br><span class="line">canal.destinations = example</span><br><span class="line"></span><br><span class="line">canal.mq.servers = 39.98.41.26:9092</span><br><span class="line">canal.mq.retries = 0</span><br><span class="line">canal.mq.batchSize = 16384</span><br><span class="line">canal.mq.maxRequestSize = 1048576</span><br><span class="line">canal.mq.lingerMs = 1</span><br><span class="line">canal.mq.bufferMemory = 33554432</span><br><span class="line">canal.mq.canalBatchSize = 50</span><br><span class="line">canal.mq.canalGetTimeout = 100</span><br><span class="line">canal.mq.flatMessage = true</span><br><span class="line">canal.mq.compressionType = none</span><br><span class="line">canal.mq.acks = all</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><em>注:zookeeper端口2181；kafka端口9092</em></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/private/canal-help/">展开全文 >></a>
         </p>
       
 
