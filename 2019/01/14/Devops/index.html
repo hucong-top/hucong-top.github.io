@@ -16,7 +16,7 @@
 <meta property="og:description" content="@hucong by Auto Catalog[TOC] #服务器运维笔记">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
-<meta property="og:updated_time" content="2019-01-18T12:46:26.743Z">
+<meta property="og:updated_time" content="2019-01-18T12:49:05.290Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Devops">
 <meta name="twitter:description" content="@hucong by Auto Catalog[TOC] #服务器运维笔记">
@@ -267,9 +267,10 @@
 <p>3、修改 <strong>/etc/fstab</strong>文件，删除或注释相关配置，取消 SWAP 的自动挂载：</p>
 <p>4、  通过 free -m  确认 SWAP 已经关闭。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz canal-deployer-1.1.2]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           3790        2632         861           0         296         927</span><br><span class="line">Swap:             0           0           0</span><br></pre></td></tr></table></figure></p>
 <p>5、 swappiness 参数调整：</p>
-<p>可以使用下述方法临时修改此参数，这里配置为 0%：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/vm/swappiness  </span><br><span class="line">```  </span><br><span class="line">若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf 文件，并增加以下内容：</span><br></pre></td></tr></table></figure></p>
-<h1 id="vim-etc-sysctl-conf"><a href="#vim-etc-sysctl-conf" class="headerlink" title="vim /etc/sysctl.conf"></a>vim /etc/sysctl.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">修改**vm.swappiness=0**</span><br></pre></td></tr></table></figure>
-<h1 id="sysctl-p"><a href="#sysctl-p" class="headerlink" title="sysctl -p"></a>sysctl -p</h1><p><code>`</code><br><em>参考文档:<a href="https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF" target="_blank" rel="noopener">云服务器 ECS Linux SWAP 配置概要说明</a></em></p>
+<p>可以使用下述方法临时修改此参数，这里配置为 0%：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/vm/swappiness  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf 文件，并增加以下内容：</span><br></pre></td></tr></table></figure></p>
+<h1 id="vim-etc-sysctl-conf"><a href="#vim-etc-sysctl-conf" class="headerlink" title="vim /etc/sysctl.conf"></a>vim /etc/sysctl.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改**vm.swappiness=0**</span><br></pre></td></tr></table></figure>
+<h1 id="sysctl-p"><a href="#sysctl-p" class="headerlink" title="sysctl -p"></a>sysctl -p</h1><p><code>`</code></p>
+<p><em>参考文档:<a href="https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF" target="_blank" rel="noopener">云服务器 ECS Linux SWAP 配置概要说明</a></em></p>
 
       
 
