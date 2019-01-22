@@ -8,17 +8,17 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>canal-help | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@hucong by Auto Catalog[TOC] canal问题总结">
+  <meta name="description" content="@hucong 目录导航    canal问题总结 重置canal中binlog信息 在Linux上运行canal-receiver客户端 canal配置 canal问题排查     canal问题总结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="canal-help">
 <meta property="og:url" content="http://yoursite.com/2019/01/18/canal-help/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="@hucong by Auto Catalog[TOC] canal问题总结">
+<meta property="og:description" content="@hucong 目录导航    canal问题总结 重置canal中binlog信息 在Linux上运行canal-receiver客户端 canal配置 canal问题排查     canal问题总结">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-18T12:33:02.652Z">
+<meta property="og:updated_time" content="2019-01-22T06:15:11.701Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="canal-help">
-<meta name="twitter:description" content="@hucong by Auto Catalog[TOC] canal问题总结">
+<meta name="twitter:description" content="@hucong 目录导航    canal问题总结 重置canal中binlog信息 在Linux上运行canal-receiver客户端 canal配置 canal问题排查     canal问题总结">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
   
@@ -182,7 +182,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>@hucong <!--注释：canal问题总结--><br><em>by Auto Catalog</em><br>[TOC]</p>
+        <p>@hucong <!--注释：canal问题总结--><br><!-- START doctoc generated TOC please keep comment here to allow auto update --><br><!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --><br><strong>目录导航</strong>  </p>
+<ul>
+<li><a href="#canal%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93">canal问题总结</a><ul>
+<li><a href="#%E9%87%8D%E7%BD%AEcanal%E4%B8%ADbinlog%E4%BF%A1%E6%81%AF">重置canal中binlog信息</a></li>
+<li><a href="#%E5%9C%A8linux%E4%B8%8A%E8%BF%90%E8%A1%8Ccanal-receiver%E5%AE%A2%E6%88%B7%E7%AB%AF">在Linux上运行canal-receiver客户端</a></li>
+<li><a href="#canal%E9%85%8D%E7%BD%AE">canal配置</a></li>
+<li><a href="#canal%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5">canal问题排查</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1><a id="more"></a>
 <h2 id="重置canal中binlog信息"><a href="#重置canal中binlog信息" class="headerlink" title="重置canal中binlog信息"></a>重置canal中binlog信息</h2><p>通常在查看canal.log时，提示一堆错误，如reset by peer之类的多半是canal中记录的binlog位置与MySQL中实际记录的binlog位置不同造成的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">2019-01-15 10:52:20.941 [New I/O server worker #1-3] ERROR c.a.otter.canal.server.netty.handler.SessionHandler - something goes wrong with channel:[id: 0x2a1b7b6f, /149.129.68.40:48252 =&gt; /172.26.100.222:11111], exception=java.io.IOException: Connection reset by peer</span><br><span class="line">	at sun.nio.ch.FileDispatcherImpl.read0(Native Method)</span><br><span class="line">	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)</span><br><span class="line">	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)</span><br><span class="line">	at sun.nio.ch.IOUtil.read(IOUtil.java:192)</span><br><span class="line">	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:380)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:322)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:281)</span><br><span class="line">	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:201)</span><br><span class="line">	at org.jboss.netty.util.internal.IoWorkerRunnable.run(IoWorkerRunnable.java:46)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:748)</span><br></pre></td></tr></table></figure></p>
 <ul>
@@ -207,7 +217,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mvn install</span><br></pre></td></tr></table></figure>
 <p>都提示成功success说明编译成功，此时自动生成程序目录./target<br>4.启动程序，在./target目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure></p>
 <p>关于如何在后台运行程序参考：<a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
-<h2 id="canal设置"><a href="#canal设置" class="headerlink" title="canal设置"></a>canal设置</h2><p>###无MQ下canal<br>设置对应文件的instance.properties(默认example)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim conf/example/instance.properties</span><br></pre></td></tr></table></figure></p>
+<h2 id="canal配置"><a href="#canal配置" class="headerlink" title="canal配置"></a>canal配置</h2><p>###无MQ下canal<br>设置对应文件的instance.properties(默认example)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim conf/example/instance.properties</span><br></pre></td></tr></table></figure></p>
 <p>修改以下配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#################################################</span><br><span class="line">## mysql serverId , v1.0.26+ will autoGen </span><br><span class="line">canal.instance.mysql.slaveId=1234</span><br><span class="line"></span><br><span class="line"># position info</span><br><span class="line">canal.instance.master.address=127.0.0.1:3306</span><br><span class="line"></span><br><span class="line"># username/password</span><br><span class="line">canal.instance.dbUsername=canal</span><br><span class="line">canal.instance.dbPassword=canal</span><br><span class="line">canal.instance.connectionCharset = UTF-8</span><br><span class="line">canal.instance.defaultDatabaseName =material_1703</span><br><span class="line"></span><br><span class="line"># table regex</span><br><span class="line">canal.instance.filter.regex=material_1703.bi_bill</span><br><span class="line">#################################################</span><br></pre></td></tr></table></figure></p>
 <p>###canal+kafka配置</p>
 <ul>
@@ -220,7 +230,7 @@
 </li>
 </ul>
 <p><em>注:zookeeper端口2181；kafka端口9092</em></p>
-<p>##canal问题排查</p>
+<h2 id="canal问题排查"><a href="#canal问题排查" class="headerlink" title="canal问题排查"></a>canal问题排查</h2><p>###123</p>
 <p><strong>问题1：</strong></p>
 <blockquote>
 <p>ERROR c.a.otter.canal.parse.inbound.mysql.MysqlEventParser - dump address /192.168.1.50:3306 has an error, retrying. caused by<br>com.alibaba.otter.canal.parse.exception.CanalParseException: can’t find start position for example</p>
@@ -344,7 +354,7 @@
 <nav id="article-nav">
   
   
-    <a href="/2019/01/14/Devops/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2019/01/14/初始化阿里云服务器WEB环境/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title"></div>
       <i class="icon-circle-right"></i>
     </a>
