@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Devops | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta name="keywords" content="Devops">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Devops">
 <meta property="og:url" content="http://yoursite.com/2019/01/14/Devops/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
-<meta property="og:updated_time" content="2019-01-22T07:26:56.477Z">
+<meta property="og:updated_time" content="2019-01-22T07:36:25.206Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Devops">
-<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta name="twitter:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
@@ -196,7 +196,6 @@
 <li><a href="#%E7%9B%91%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E7%BB%9C%E7%8A%B6%E5%86%B5">监测服务器网络状况</a></li>
 <li><a href="#linux%E9%85%8D%E7%BD%AEswap%E5%88%86%E5%8C%BA">Linux配置SWAP分区</a><ul>
 <li><a href="#%E5%BC%80%E5%90%AF-swap">开启 SWAP</a></li>
-<li><a href="#%E5%85%B3%E9%97%AD-swap">关闭 SWAP</a></li>
 </ul>
 </li>
 <li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
@@ -284,29 +283,48 @@
 <p>可以使用下述方法临时修改此参数，假设我们配置为空闲内存少于 20% 时才使用 SWAP 分区：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 20 &gt;/proc/sys/vm/swappiness</span><br></pre></td></tr></table></figure></p>
 <p>若需要永久修改此配置，在系统重启之后也生效的话，可以修改 <strong>/etc/sysctl.conf</strong> 文件，并增加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure></p>
 <p>修改为<strong>vm.swappiness=20</strong>,保存后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure></p>
-<h3 id="关闭-SWAP"><a href="#关闭-SWAP" class="headerlink" title="关闭 SWAP"></a>关闭 SWAP</h3><p>当系统出现内存不足时，开启 SWAP 可能会因频繁换页操作，导致 IO 性能下降。如果要关闭 SWAP，可以采用如下方法。</p>
-<p>1、free -m 查询 SWAP 分区设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz canal-deployer-1.1.2]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           3790        2632         861           0         296         927</span><br><span class="line">Swap:          8191        1210        6981</span><br></pre></td></tr></table></figure></p>
-<p>2、使用命令 swapoff 关闭 SWAP，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#swapoff /mnt/swap</span><br></pre></td></tr></table></figure></p>
-<p>3、修改 <strong>/etc/fstab</strong>文件，删除或注释相关配置，取消 SWAP 的自动挂载：</p>
-<p>4、  通过 free -m  确认 SWAP 已经关闭。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz canal-deployer-1.1.2]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           3790        2632         861           0         296         927</span><br><span class="line">Swap:             0           0           0</span><br></pre></td></tr></table></figure></p>
-<p>5、 swappiness 参数调整：</p>
-<p>可以使用下述方法临时修改此参数，这里配置为 0%：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/vm/swappiness  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf 文件，并增加以下内容：</span><br></pre></td></tr></table></figure>
-<h1 id="vim-etc-sysctl-conf"><a href="#vim-etc-sysctl-conf" class="headerlink" title="vim /etc/sysctl.conf"></a>vim /etc/sysctl.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改**vm.swappiness=0**</span><br></pre></td></tr></table></figure>
-<h1 id="sysctl-p"><a href="#sysctl-p" class="headerlink" title="sysctl -p"></a>sysctl -p</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*参考文档:[云服务器 ECS Linux SWAP 配置概要说明](https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF)*</span><br><span class="line"></span><br><span class="line">## Linux下将指令后台运行、关闭、查看任务</span><br><span class="line">###1.&lt;kbd&gt;&amp;&lt;/kbd&gt;</span><br><span class="line">直接加到指令的后面，就可以将该条指令放到后台运行，不建议在还需要交互的指令上使用&amp;，会直接忽略（比如输入密码确认）</span><br><span class="line">- 运行java程序canal-receiver</span><br></pre></td></tr></table></figure>
-<p>#java -jar canal-receiver.jar start 1 &amp;    //执行一个java程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###2.&lt;kbd&gt;Ctrl&lt;/kbd&gt; +&lt;kbd&gt;Z&lt;/kbd&gt;</span><br><span class="line"></span><br><span class="line">可以将一个正在前台执行的命令放到后台，并且处于暂停状态</span><br><span class="line">- 将本机上的/usr/local/frp_server/文件夹复制到39.98.41.26的/usr/local/目录下</span><br></pre></td></tr></table></figure></p>
-<p>#scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 此时复制开始，并占用当前界面，可以用&lt;kbd&gt;Ctrl&lt;/kbd&gt; +&lt;kbd&gt;Z&lt;/kbd&gt;放到后台</span><br></pre></td></tr></table></figure></p>
-<p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&amp;ensp;[命令号] + 状态    &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp; 执行指令 </span><br><span class="line"></span><br><span class="line">###3.&lt;kbd&gt;jobs&lt;/dbd&gt;</span><br><span class="line"></span><br><span class="line">查看当前有多少在后台运行的命令</span><br><span class="line"></span><br><span class="line">jobs -l选项可显示所有任务的PID，jobs的状态可以是running, stopped, Terminated。但是如果任务被终止了（kill），shell 从当前的shell环境已知的列表中删除任务的进程标识。</span><br><span class="line"></span><br><span class="line">###4.&lt;kbd&gt;fg&lt;/kbd&gt;</span><br><span class="line">将后台中的命令调至前台继续运行。如果后台中有多个命令，可以用fg %jobnumber（是命令编号，不是进程号）将选中的命令调出。</span><br></pre></td></tr></table></figure></p>
-<h1 id="job-l-查看后台任务"><a href="#job-l-查看后台任务" class="headerlink" title="job -l               //查看后台任务"></a>job -l               //查看后台任务</h1><p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/</p>
-<p>#fg 2                 //调起scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/指令，并在前台运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###5.&lt;kbd&gt;bg&lt;/kbd&gt;</span><br><span class="line">将一个在后台暂停的命令，变成在后台继续执行。如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出。</span><br><span class="line">- 查看后台任务</span><br></pre></td></tr></table></figure></p>
-<h1 id="job-l"><a href="#job-l" class="headerlink" title="job -l"></a>job -l</h1><p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 调起scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/指令，并在后台运行</span><br></pre></td></tr></table></figure></p>
-<p>#bg 2<br>[2]+ scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 确认状态</span><br></pre></td></tr></table></figure></p>
-<p>#jobs -l<br>[2]  24233 Running                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###6.&lt;kbd&gt;kill&lt;/kbd&gt;</span><br><span class="line">用法1：通过jobs命令查看job号（假设为num），然后执行kill %num</span><br></pre></td></tr></table></figure></p>
-<p>#jobs -l<br>[2]  24233 Running                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;</p>
-<p>#kill 24233<br>Killed by signal 15.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用法2：通过ps命令查看job的进程号（PID，假设为pid），然后执行kill pid</span><br><span class="line">*注：[ps命令详解](https://blog.csdn.net/freeking101/article/details/53444530)*</span><br></pre></td></tr></table></figure></p>
-<p>#ps -aux            //a:显示所有程序 u:以用户为主的格式来显示 x:显示所有程序，不以终端机来区分<br>root     24271  0.0  0.0  57700  2184 pts/0    S    11:53   0:00 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/</p>
-<p>#kill 24271<br>Killed by signal 15.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7.&lt;kbd&gt;nohup&lt;/kbd&gt;</span><br><span class="line"></span><br><span class="line">如果让程序始终在后台执行，即使关闭当前的终端也执行（之前的&amp;做不到），这时候需要nohup。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。关闭中断后，在另一个终端jobs已经无法看到后台跑得程序了，此时利用ps（进程查看命令）</span><br></pre></td></tr></table></figure></p>
-<p>#nohup java -jar canal-receiver.jar start 1<br><code>`</code></p>
+<p><em>参考文档:<a href="https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF" target="_blank" rel="noopener">云服务器 ECS Linux SWAP 配置概要说明</a></em></p>
+<h2 id="Linux下将指令后台运行、关闭、查看任务"><a href="#Linux下将指令后台运行、关闭、查看任务" class="headerlink" title="Linux下将指令后台运行、关闭、查看任务"></a>Linux下将指令后台运行、关闭、查看任务</h2><p>###1.<kbd>&amp;</kbd><br>直接加到指令的后面，就可以将该条指令放到后台运行，不建议在还需要交互的指令上使用&amp;，会直接忽略（比如输入密码确认）</p>
+<ul>
+<li>运行java程序canal-receiver</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#java -jar canal-receiver.jar start 1 &amp;    //执行一个java程序</span><br></pre></td></tr></table></figure>
+<p>###2.<kbd>Ctrl</kbd> +<kbd>Z</kbd></p>
+<p>可以将一个正在前台执行的命令放到后台，并且处于暂停状态</p>
+<ul>
+<li>将本机上的/usr/local/frp_server/文件夹复制到39.98.41.26的/usr/local/目录下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>此时复制开始，并占用当前界面，可以用<kbd>Ctrl</kbd> +<kbd>Z</kbd>放到后台</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
+<p>&ensp;[命令号] + 状态    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp; 执行指令 </p>
+<p>###3.<kbd>jobs</kbd></p>
+<p>查看当前有多少在后台运行的命令</p>
+<p>jobs -l选项可显示所有任务的PID，jobs的状态可以是running, stopped, Terminated。但是如果任务被终止了（kill），shell 从当前的shell环境已知的列表中删除任务的进程标识。</p>
+<p>###4.<kbd>fg</kbd><br>将后台中的命令调至前台继续运行。如果后台中有多个命令，可以用fg %jobnumber（是命令编号，不是进程号）将选中的命令调出。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># job -l               //查看后台任务</span><br><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br><span class="line">#fg 2                 //调起scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/指令，并在前台运行</span><br></pre></td></tr></table></figure>
+<p>###5.<kbd>bg</kbd><br>将一个在后台暂停的命令，变成在后台继续执行。如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出。</p>
+<ul>
+<li>查看后台任务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># job -l               </span><br><span class="line">[2]+  Stopped                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br></pre></td></tr></table></figure>
+<ul>
+<li>调起scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/指令，并在后台运行</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#bg 2              </span><br><span class="line">[2]+ scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>确认状态</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br></pre></td></tr></table></figure>
+<p>###6.<kbd>kill</kbd><br>用法1：通过jobs命令查看job号（假设为num），然后执行kill %num</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/ &amp;</span><br><span class="line">#kill 24233</span><br><span class="line">Killed by signal 15.</span><br></pre></td></tr></table></figure>
+<p>用法2：通过ps命令查看job的进程号（PID，假设为pid），然后执行kill pid<br><em>注：<a href="https://blog.csdn.net/freeking101/article/details/53444530" target="_blank" rel="noopener">ps命令详解</a></em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ps -aux            //a:显示所有程序 u:以用户为主的格式来显示 x:显示所有程序，不以终端机来区分</span><br><span class="line">root     24271  0.0  0.0  57700  2184 pts/0    S    11:53   0:00 scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/</span><br><span class="line">#kill 24271</span><br><span class="line">Killed by signal 15.</span><br></pre></td></tr></table></figure>
+<p>###7.<kbd>nohup</kbd></p>
+<p>如果让程序始终在后台执行，即使关闭当前的终端也执行（之前的&amp;做不到），这时候需要nohup。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。关闭中断后，在另一个终端jobs已经无法看到后台跑得程序了，此时利用ps（进程查看命令）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#nohup java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure>
 <p>###8.<kbd>Ctrl</kbd>+<kbd>C</kbd><br>前台进程的终止</p>
 <p><em>参考于:<a href="https://www.cnblogs.com/kaituorensheng/p/3980334.html" target="_blank" rel="noopener">linux后台运行和关闭、查看后台任务</a></em></p>
 
