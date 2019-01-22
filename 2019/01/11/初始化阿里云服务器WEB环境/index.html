@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="MarkDown·Blog">
 <meta property="og:description" content="目录导航    初始化阿里云服务器WEB环境 实验环境 安装配置JDK环境 1.配置环境变量 2.手动使环境变量生效 3.检查JDK配置是否生效   切换yum库为163 安装运行Nginx（域名） 安装卸载MySQL 卸载当前安装的MySQL 安装MySQL   数据库初始化 1.启动数据库 2.由于是通过yum安装，所以查看默认密码进行登录操作 3.设置安全策略组，方便设置简单密码 4.修">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-22T13:31:11.343Z">
+<meta property="og:updated_time" content="2019-01-22T14:30:19.855Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="初始化阿里云服务器WEB环境">
 <meta name="twitter:description" content="目录导航    初始化阿里云服务器WEB环境 实验环境 安装配置JDK环境 1.配置环境变量 2.手动使环境变量生效 3.检查JDK配置是否生效   切换yum库为163 安装运行Nginx（域名） 安装卸载MySQL 卸载当前安装的MySQL 安装MySQL   数据库初始化 1.启动数据库 2.由于是通过yum安装，所以查看默认密码进行登录操作 3.设置安全策略组，方便设置简单密码 4.修">
@@ -231,7 +231,8 @@
 <li>CentOS 7.3</li>
 </ul>
 <h2 id="安装配置JDK环境"><a href="#安装配置JDK环境" class="headerlink" title="安装配置JDK环境"></a>安装配置JDK环境</h2><p>以安装在/usr/local/jdk1.8.0_144下的jdk文件为例：</p>
-<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1.配置环境变量"></a>1.配置环境变量</h3><figure class="highlight plain"><figcaption><span>vim</span><a href="/etc/profile```">link</a></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_144 </span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar</span><br></pre></td></tr></table></figure>
+<h3 id="1-配置环境变量"><a href="#1-配置环境变量" class="headerlink" title="1.配置环境变量"></a>1.配置环境变量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export JAVA_HOME=/usr/local/jdk1.8.0_144 </span><br><span class="line">export PATH=$PATH:$JAVA_HOME/bin</span><br><span class="line">export CLASSPATH=.:$JAVA_HOME/jre/lib:$JAVA_HOME/lib:$JAVA_HOME/lib/tools.jar</span><br></pre></td></tr></table></figure>
 <h3 id="2-手动使环境变量生效"><a href="#2-手动使环境变量生效" class="headerlink" title="2.手动使环境变量生效"></a>2.手动使环境变量生效</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
 <h3 id="3-检查JDK配置是否生效"><a href="#3-检查JDK配置是否生效" class="headerlink" title="3.检查JDK配置是否生效"></a>3.检查JDK配置是否生效</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
 <p>可以参考我写在CSDN上的一篇教程  <a href="https://blog.csdn.net/Robin_hc/article/details/85766268" target="_blank" rel="noopener">CentOS 7.3安装JDK8</a>.</p>
