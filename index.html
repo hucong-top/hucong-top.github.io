@@ -160,196 +160,34 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-canal-help" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+    <article id="post-Linux查看、关闭、后台运行任务" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/18/canal-help/">canal-help</a>
+      <a class="article-title" href="/2019/01/14/Linux查看、关闭、后台运行任务/">Linux查看、关闭、后台运行任务</a>
     </h1>
   
 
         
-        <a href="/2019/01/18/canal-help/" class="archive-article-date">
-  	<time datetime="2019-01-18T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-18</time>
+        <a href="/2019/01/14/Linux查看、关闭、后台运行任务/" class="archive-article-date">
+  	<time datetime="2019-01-14T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>@hucong <!--注释：canal问题总结--><br><!-- START doctoc generated TOC please keep comment here to allow auto update --><br><!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --><br><strong>目录导航</strong>  </p>
-<ul>
-<li><a href="#canal%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93">canal问题总结</a><ul>
-<li><a href="#%E9%87%8D%E7%BD%AEcanal%E4%B8%ADbinlog%E4%BF%A1%E6%81%AF">重置canal中binlog信息</a></li>
-<li><a href="#%E5%9C%A8linux%E4%B8%8A%E8%BF%90%E8%A1%8Ccanal-receiver%E5%AE%A2%E6%88%B7%E7%AB%AF">在Linux上运行canal-receiver客户端</a></li>
-<li><a href="#canal%E9%85%8D%E7%BD%AE">canal配置</a></li>
-<li><a href="#canal%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5">canal问题排查</a></li>
-</ul>
-</li>
-</ul>
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1>
-        
-          <a class="article-more-a" href="/2019/01/18/canal-help/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/18/canal-help/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-初始化阿里云服务器WEB环境" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
         <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank" rel="noopener">DocToc</a></em></p>
+<p><strong>目录导航</strong>  </p>
 <ul>
-<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8web%E7%8E%AF%E5%A2%83">初始化阿里云服务器WEB环境</a><ul>
-<li><a href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83">实验环境</a></li>
-<li><a href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEjdk%E7%8E%AF%E5%A2%83">安装配置JDK环境</a></li>
-<li><a href="#%E5%88%87%E6%8D%A2yum%E5%BA%93%E4%B8%BA163">切换yum库为163</a></li>
-<li><a href="#%E5%AE%89%E8%A3%85%E8%BF%90%E8%A1%8Cnginx%E5%9F%9F%E5%90%8D">安装运行Nginx（域名）</a></li>
-<li><a href="#%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BDmysql">安装卸载MySQL</a><ul>
-<li><a href="#%E5%8D%B8%E8%BD%BD%E5%BD%93%E5%89%8D%E5%AE%89%E8%A3%85%E7%9A%84mysql">卸载当前安装的MySQL</a></li>
-<li><a href="#%E5%AE%89%E8%A3%85mysql">安装MySQL</a></li>
-</ul>
-</li>
-<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9D%E5%A7%8B%E5%8C%96">数据库初始化</a><ul>
-<li><a href="#1%E5%90%AF%E5%8A%A8%E6%95%B0%E6%8D%AE%E5%BA%93">1.启动数据库</a></li>
-<li><a href="#2%E7%94%B1%E4%BA%8E%E6%98%AF%E9%80%9A%E8%BF%87yum%E5%AE%89%E8%A3%85%E6%89%80%E4%BB%A5%E6%9F%A5%E7%9C%8B%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%99%BB%E5%BD%95%E6%93%8D%E4%BD%9C">2.由于是通过yum安装，所以查看默认密码进行登录操作</a></li>
-<li><a href="#3%E8%AE%BE%E7%BD%AE%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E7%BB%84%E6%96%B9%E4%BE%BF%E8%AE%BE%E7%BD%AE%E7%AE%80%E5%8D%95%E5%AF%86%E7%A0%81">3.设置安全策略组，方便设置简单密码</a></li>
-<li><a href="#4%E4%BF%AE%E6%94%B9%E5%88%9D%E5%A7%8B%E5%AF%86%E7%A0%81">4.修改初始密码</a></li>
-<li><a href="#5%E8%AE%BE%E7%BD%AE%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5">5.设置远程连接</a></li>
-<li><a href="#6%E9%87%8D%E8%BD%BD%E6%8E%88%E6%9D%83%E8%A1%A8">6.重载授权表</a></li>
-<li><a href="#7%E5%8D%87%E7%BA%A7%E4%B9%8B%E5%90%8E%E5%88%B7%E6%96%B0">7.升级之后刷新</a></li>
-</ul>
-</li>
-<li><a href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEtomcat">安装配置Tomcat</a><ul>
-<li><a href="#1%E5%AE%89%E8%A3%85tomcat">1.安装Tomcat</a></li>
-<li><a href="#2%E9%85%8D%E7%BD%AEtomcat%E5%A4%9A%E9%A1%B9%E7%9B%AE%E5%8D%95%E5%AE%9E%E4%BE%8B">2.配置tomcat多项目单实例</a></li>
-<li><a href="#3%E8%BF%90%E8%A1%8Cweb%E6%9C%8D%E5%8A%A1">3.运行web服务</a></li>
-<li><a href="#4%E5%8F%AF%E9%80%89tomcat%E5%90%AF%E5%8A%A8%E6%85%A2-%E6%9C%89%E4%B8%A4%E7%A7%8D%E8%A7%A3%E5%86%B3">4.(可选)tomcat启动慢 有两种解决</a></li>
-<li><a href="#5%E5%8F%AF%E9%80%89%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%92%8C%E6%96%87%E4%BB%B6%E8%BF%81%E7%A7%BB">5.（可选）后台运行和文件迁移</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<hr>
-<p>title: 初始化阿里云服务器WEB环境<br>date: 2019-01-11 16:06:12</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>@hucong <!--注释：初始化阿里云服务器WEB环境--><br><em>by Auto Catalog</em><br>[TOC]</p>
-<h1 id="初始化阿里云服务器WEB环境"><a href="#初始化阿里云服务器WEB环境" class="headerlink" title="初始化阿里云服务器WEB环境"></a>初始化阿里云服务器WEB环境</h1><p>这是一篇针对我公司web环境的初始化教程，仅以MD的方式分享记录此教程，对有同样此需求的同学提供参考<br>
-        
-          <a class="article-more-a" href="/2019/01/14/初始化阿里云服务器WEB环境/#more">more >></a>
-        
-      
-
-      
-    </p></div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/01/14/初始化阿里云服务器WEB环境/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Linux查看、关闭、后台运行任务" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank" rel="noopener">DocToc</a></em></p>
-<ul>
-<li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a><ul>
-<li><a href="#1kbdkbd">1.<kbd>&amp;</kbd></a></li>
-<li><a href="#2kbdctrlkbd-kbdzkbd">2.<kbd>Ctrl</kbd> +<kbd>Z</kbd></a></li>
-<li><a href="#3kbdjobsdbd">3.<kbd>jobs</kbd></a></li>
-<li><a href="#4kbdfgkbd">4.<kbd>fg</kbd></a></li>
-<li><a href="#5kbdbgkbd">5.<kbd>bg</kbd></a></li>
-<li><a href="#6kbdkillkbd">6.<kbd>kill</kbd></a></li>
-<li><a href="#7kbdnohupkbd">7.<kbd>nohup</kbd></a></li>
-<li><a href="#8kbdctrlkbdkbdckbd">8.<kbd>Ctrl</kbd>+<kbd>C</kbd></a></li>
-</ul>
-</li>
-</ul>
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<hr>
-<p>title: Linux查看、关闭、后台运行任务<br>date: 2019-01-14 16:06:12</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p><em>@胡聪</em><br><em>by Auto Catalog</em><br>[TOC]<br>常用的&amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解<br>
+<p><em>@胡聪</em><br>常用的&amp;、Ctrl +Z、jobs、fg、bg、kill、nohup、Ctrl+C指令详解<br>
         
           <a class="article-more-a" href="/2019/01/14/Linux查看、关闭、后台运行任务/#more">more >></a>
         
@@ -436,6 +274,108 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/01/14/hello-world/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-初始化阿里云服务器WEB环境" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/11/初始化阿里云服务器WEB环境/">初始化阿里云服务器WEB环境</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/11/初始化阿里云服务器WEB环境/" class="archive-article-date">
+  	<time datetime="2019-01-11T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-11</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+<p><strong>目录导航</strong>  </p>
+<ul>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%98%BF%E9%87%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%99%A8web%E7%8E%AF%E5%A2%83">初始化阿里云服务器WEB环境</a><ul>
+<li><a href="#%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83">实验环境</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEjdk%E7%8E%AF%E5%A2%83">安装配置JDK环境</a></li>
+<li><a href="#%E5%88%87%E6%8D%A2yum%E5%BA%93%E4%B8%BA163">切换yum库为163</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85%E8%BF%90%E8%A1%8Cnginx%E5%9F%9F%E5%90%8D">安装运行Nginx（域名）</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BDmysql">安装卸载MySQL</a><ul>
+<li><a href="#%E5%8D%B8%E8%BD%BD%E5%BD%93%E5%89%8D%E5%AE%89%E8%A3%85%E7%9A%84mysql">卸载当前安装的MySQL</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85mysql">安装MySQL</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E5%88%9D%E5%A7%8B%E5%8C%96">数据库初始化</a><ul>
+<li><a href="#1%E5%90%AF%E5%8A%A8%E6%95%B0%E6%8D%AE%E5%BA%93">1.启动数据库</a></li>
+<li><a href="#2%E7%94%B1%E4%BA%8E%E6%98%AF%E9%80%9A%E8%BF%87yum%E5%AE%89%E8%A3%85%E6%89%80%E4%BB%A5%E6%9F%A5%E7%9C%8B%E9%BB%98%E8%AE%A4%E5%AF%86%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%99%BB%E5%BD%95%E6%93%8D%E4%BD%9C">2.由于是通过yum安装，所以查看默认密码进行登录操作</a></li>
+<li><a href="#3%E8%AE%BE%E7%BD%AE%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5%E7%BB%84%E6%96%B9%E4%BE%BF%E8%AE%BE%E7%BD%AE%E7%AE%80%E5%8D%95%E5%AF%86%E7%A0%81">3.设置安全策略组，方便设置简单密码</a></li>
+<li><a href="#4%E4%BF%AE%E6%94%B9%E5%88%9D%E5%A7%8B%E5%AF%86%E7%A0%81">4.修改初始密码</a></li>
+<li><a href="#5%E8%AE%BE%E7%BD%AE%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5">5.设置远程连接</a></li>
+<li><a href="#6%E9%87%8D%E8%BD%BD%E6%8E%88%E6%9D%83%E8%A1%A8">6.重载授权表</a></li>
+<li><a href="#7%E5%8D%87%E7%BA%A7%E4%B9%8B%E5%90%8E%E5%88%B7%E6%96%B0">7.升级之后刷新</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEtomcat">安装配置Tomcat</a><ul>
+<li><a href="#1%E5%AE%89%E8%A3%85tomcat">1.安装Tomcat</a></li>
+<li><a href="#2%E9%85%8D%E7%BD%AEtomcat%E5%A4%9A%E9%A1%B9%E7%9B%AE%E5%8D%95%E5%AE%9E%E4%BE%8B">2.配置tomcat多项目单实例</a></li>
+<li><a href="#3%E8%BF%90%E8%A1%8Cweb%E6%9C%8D%E5%8A%A1">3.运行web服务</a></li>
+<li><a href="#4%E5%8F%AF%E9%80%89tomcat%E5%90%AF%E5%8A%A8%E6%85%A2-%E6%9C%89%E4%B8%A4%E7%A7%8D%E8%A7%A3%E5%86%B3">4.(可选)tomcat启动慢 有两种解决</a></li>
+<li><a href="#5%E5%8F%AF%E9%80%89%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%92%8C%E6%96%87%E4%BB%B6%E8%BF%81%E7%A7%BB">5.（可选）后台运行和文件迁移</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p>@hucong <!--注释：初始化阿里云服务器WEB环境--></p>
+<h1 id="初始化阿里云服务器WEB环境"><a href="#初始化阿里云服务器WEB环境" class="headerlink" title="初始化阿里云服务器WEB环境"></a>初始化阿里云服务器WEB环境</h1><p>这是一篇针对我公司web环境的初始化教程，仅以MD的方式分享记录此教程，对有同样此需求的同学提供参考<br>
+        
+          <a class="article-more-a" href="/2019/01/11/初始化阿里云服务器WEB环境/#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/11/初始化阿里云服务器WEB环境/">展开全文 >></a>
         </p>
       
 
