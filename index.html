@@ -160,6 +160,186 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-canal-help" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/18/canal-help/">canal-help</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/18/canal-help/" class="archive-article-date">
+  	<time datetime="2019-01-18T08:06:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@hucong <!--注释：canal问题总结--><br><!-- START doctoc generated TOC please keep comment here to allow auto update --><br><!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --><br><strong>目录导航</strong>  </p>
+<ul>
+<li><a href="#canal%E9%97%AE%E9%A2%98%E6%80%BB%E7%BB%93">canal问题总结</a><ul>
+<li><a href="#%E9%87%8D%E7%BD%AEcanal%E4%B8%ADbinlog%E4%BF%A1%E6%81%AF">重置canal中binlog信息</a></li>
+<li><a href="#%E5%9C%A8linux%E4%B8%8A%E8%BF%90%E8%A1%8Ccanal-receiver%E5%AE%A2%E6%88%B7%E7%AB%AF">在Linux上运行canal-receiver客户端</a></li>
+<li><a href="#canal%E9%85%8D%E7%BD%AE">canal配置</a></li>
+<li><a href="#canal%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5">canal问题排查</a></li>
+</ul>
+</li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<h1 id="canal问题总结"><a href="#canal问题总结" class="headerlink" title="canal问题总结"></a>canal问题总结</h1>
+        
+          <a class="article-more-a" href="/2019/01/18/canal-help/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">canal</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/18/canal-help/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Devops" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/14/Devops/">Devops</a>
+    </h1>
+  
+
+        
+        <a href="/2019/01/14/Devops/" class="archive-article-date">
+  	<time datetime="2019-01-14T11:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@hucong <!--来自【简易】template--><br><!-- START doctoc generated TOC please keep comment here to allow auto update --><br><!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --><br><strong>目录导航</strong>  </p>
+<ul>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8%E9%87%8F%E6%96%B9%E6%B3%95">查看内存的使用量方法</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93">服务器之间的文件传输</a><ul>
+<li><a href="#%E6%AD%A3%E5%B8%B8%E6%8B%B7%E8%B4%9D">正常拷贝</a></li>
+<li><a href="#%E5%85%8D%E5%AF%86%E6%8B%B7%E8%B4%9D">免密拷贝</a></li>
+</ul>
+</li>
+<li><a href="#%E7%9B%91%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E7%BB%9C%E7%8A%B6%E5%86%B5">监测服务器网络状况</a></li>
+<li><a href="#linux%E9%85%8D%E7%BD%AEswap%E5%88%86%E5%8C%BA">Linux配置SWAP分区</a><ul>
+<li><a href="#%E5%BC%80%E5%90%AF-swap">开启 SWAP</a></li>
+<li><a href="#%E5%85%B3%E9%97%AD-swap">关闭 SWAP</a></li>
+</ul>
+</li>
+<li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
+</ul>
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+<p>#服务器运维笔记<br><!-- toc --><br>
+        
+          <a class="article-more-a" href="/2019/01/14/Devops/#more">more >></a>
+        
+      
+
+      
+    </p></div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Devops</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/01/14/Devops/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Linux查看、关闭、后台运行任务" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -499,6 +679,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">canal</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Devops</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>

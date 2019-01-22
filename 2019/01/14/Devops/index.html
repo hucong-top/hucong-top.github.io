@@ -6,20 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MarkDown·Blog</title>
+  <title>Devops | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Table of Contents  generated with DocToc  查看内存的使用量方法 服务器之间的文件传输 监测服务器网络状况    title: Devopsdate: 2019-01-14 19:10:00 tags:@hucong by Auto Catalog[TOC] #服务器运维笔记">
+  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta name="keywords" content="Devops">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MarkDown·Blog">
+<meta property="og:title" content="Devops">
 <meta property="og:url" content="http://yoursite.com/2019/01/14/Devops/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="Table of Contents  generated with DocToc  查看内存的使用量方法 服务器之间的文件传输 监测服务器网络状况    title: Devopsdate: 2019-01-14 19:10:00 tags:@hucong by Auto Catalog[TOC] #服务器运维笔记">
+<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
-<meta property="og:updated_time" content="2019-01-22T02:39:46.964Z">
+<meta property="og:updated_time" content="2019-01-22T07:01:46.304Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="MarkDown·Blog">
-<meta name="twitter:description" content="Table of Contents  generated with DocToc  查看内存的使用量方法 服务器之间的文件传输 监测服务器网络状况    title: Devopsdate: 2019-01-14 19:10:00 tags:@hucong by Auto Catalog[TOC] #服务器运维笔记">
+<meta name="twitter:title" content="Devops">
+<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta name="twitter:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
@@ -167,20 +168,40 @@
             <article id="post-Devops" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Devops
+    </h1>
+  
+
+        
+        <a href="/2019/01/14/Devops/" class="archive-article-date">
+  	<time datetime="2019-01-14T11:10:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-01-14</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<p><strong>Table of Contents</strong>  <em>generated with <a href="https://github.com/thlorenz/doctoc" target="_blank" rel="noopener">DocToc</a></em></p>
+        <p>@hucong <!--来自【简易】template--><br><!-- START doctoc generated TOC please keep comment here to allow auto update --><br><!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE --><br><strong>目录导航</strong>  </p>
 <ul>
 <li><a href="#%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8%E9%87%8F%E6%96%B9%E6%B3%95">查看内存的使用量方法</a></li>
-<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93">服务器之间的文件传输</a></li>
+<li><a href="#%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93">服务器之间的文件传输</a><ul>
+<li><a href="#%E6%AD%A3%E5%B8%B8%E6%8B%B7%E8%B4%9D">正常拷贝</a></li>
+<li><a href="#%E5%85%8D%E5%AF%86%E6%8B%B7%E8%B4%9D">免密拷贝</a></li>
+</ul>
+</li>
 <li><a href="#%E7%9B%91%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E7%BB%9C%E7%8A%B6%E5%86%B5">监测服务器网络状况</a></li>
+<li><a href="#linux%E9%85%8D%E7%BD%AEswap%E5%88%86%E5%8C%BA">Linux配置SWAP分区</a><ul>
+<li><a href="#%E5%BC%80%E5%90%AF-swap">开启 SWAP</a></li>
+<li><a href="#%E5%85%B3%E9%97%AD-swap">关闭 SWAP</a></li>
+</ul>
+</li>
+<li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
-<hr>
-<p>title: Devops<br>date: 2019-01-14 19:10:00</p>
-<h2 id="tags"><a href="#tags" class="headerlink" title="tags:"></a>tags:</h2><p>@hucong <!--来自【简易】template--><br><em>by Auto Catalog</em><br>[TOC]</p>
 <p>#服务器运维笔记<br><!-- toc --><br><a id="more"></a> </p>
 <h2 id="查看内存的使用量方法"><a href="#查看内存的使用量方法" class="headerlink" title="查看内存的使用量方法"></a>查看内存的使用量方法</h2><p>文章参考:<a href="http://www.cnblogs.com/xd502djj/archive/2011/03/01/1968041.html" target="_blank" rel="noopener">Linux查看CPU和内存使用情况</a><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.cnblogs.com/zhuiluoyu/p/6154898.html" target="_blank" rel="noopener">Linux下查看内存使用情况方法总结</a></p>
 <ul>
@@ -216,12 +237,25 @@
 <h2 id="服务器之间的文件传输"><a href="#服务器之间的文件传输" class="headerlink" title="服务器之间的文件传输"></a>服务器之间的文件传输</h2><blockquote>
 <p>将测试服务器192.168.1.1的/usr/local/frp文件夹复制到正式服务器192.168.1.2的指定位置/usr/local/app下</p>
 </blockquote>
-<p>1.使用scp指令通过ssh协议传输<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#scp -r /usr/local/frp root@192.168.1.2:/usr/local/app     //-r递归</span><br></pre></td></tr></table></figure></p>
+<h3 id="正常拷贝"><a href="#正常拷贝" class="headerlink" title="正常拷贝"></a>正常拷贝</h3><p>1.使用scp指令通过ssh协议传输<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#scp -r /usr/local/frp root@192.168.1.2:/usr/local/app     //-r递归</span><br></pre></td></tr></table></figure></p>
 <p>提示是否保存密钥，并输入目标服务器的root密码（192.168.1.2），然后任务开始。<br>2.<kbd>Ctrl</kbd>+<kbd>Z</kbd>将任务暂停并挂起到后台：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[2]+  Stopped                 scp -r /usr/local/frp/ root@192.168.1.2:/usr/local/app</span><br></pre></td></tr></table></figure></p>
 <p>3.使用bg指令后台运行该任务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#bg 2</span><br></pre></td></tr></table></figure></p>
 <p>4.确认该任务状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#jobs -l</span><br><span class="line">[2]  24233 Running                 scp -r /usr/local/frp/ root@192.168.1.2:/usr/local/app &amp;</span><br></pre></td></tr></table></figure></p>
 <p>完成后，frp文件夹就在192.168.1.2的/usr/local/app/frp</p>
 <p>可参考 <a href="https://hucong-top.github.io/2019/01/14/Linux%E6%9F%A5%E7%9C%8B%E3%80%81%E5%85%B3%E9%97%AD%E3%80%81%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E4%BB%BB%E5%8A%A1/" target="_blank" rel="noopener">Linux查看、关闭、后台运行任务</a></p>
+<h3 id="免密拷贝"><a href="#免密拷贝" class="headerlink" title="免密拷贝"></a>免密拷贝</h3><p>通过建立信任关系，可以实现不输入密码。</p>
+<p>这里假设A的IP：192.168.10.1</p>
+<p>B的IP：192.168.10.2</p>
+<p>需要从A免密码输入复制文件至B。<br>1.在主机A上执行如下命令来生成配对密钥：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ssh-keygen -t rsa</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li><em>按照提示操作，注意，不要输入passphrase。提示信息如下(一路回车即可):</em></li>
+</ul>
+<p>默认在 <strong>/root/.ssh/</strong> 下生成<strong>id_rsa</strong>和<strong>id_rsa.pub</strong>文件<br>2.在主机B上存放生成密钥<br>首先先确认主机B上是否已经存在了一个密钥authorized_keys（默认在/root/.ssh/authorized_keys ）<br>如果存在，就将验证文件追加上去<br>A机器上执行：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># scp .ssh/id_rsa.pub root@192.168.10.2:/root/.ssh/a.pub</span><br></pre></td></tr></table></figure></p>
+<p>B机器上执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat ~/.ssh/a.pub &gt;&gt; ~/.ssh/authorized_keys</span><br></pre></td></tr></table></figure></p>
+<p>如果B机器不存在authorized_keys验证文件，直接将 .ssh 目录中的 id_rsa.pub 文件复制到 主机B 的 ~/.ssh/ 目录中，并改名为  authorized_keys。 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># scp .ssh/id_rsa.pub root@192.168.10.2:/root/.ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<p>以后从A主机scp到B主机就不需要密码了。<br><em>使用此方法需要注意：复制的两台计算机需要用相同的账户名，这里都是用的root。为了安全起见，需要在两台机器中创建相同的账号，然后在A上用su命令切换至账号下，执行第1步，第二步中复制文件时可能.ssh目录并不存在，需要手动创建。</em></p>
+<p>参考：<a href="https://www.cnblogs.com/feiyun126/p/5117655.html" target="_blank" rel="noopener">Linux下用SCP无需输入密码传输文件</a></p>
 <h2 id="监测服务器网络状况"><a href="#监测服务器网络状况" class="headerlink" title="监测服务器网络状况"></a>监测服务器网络状况</h2><blockquote>
 <p>说明：<br>1、查看某个进程的带宽占用需要明确知道PID、进程名字、发送速度、接收速度。<br>2、很遗憾，在Linux原生的软件中没有这样的一款，只能额外装，最符合以上的情况就只有nethogs。<br>3、<strong>nethogs</strong>可以指定网卡，但是不能指定PID，这就是一个缺陷。</p>
 </blockquote>
@@ -236,11 +270,7 @@
 <li>用lsof -i :端口号，来查看是哪些进程在占用。如查看80端口<strong>lsof -i :445</strong>或者用<strong>netstat -tunlp |grep 445</strong>用于查看指定的端口进程情况</li>
 </ul>
 <p><em>文档参考：</em><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><a href="https://www.cnblogs.com/carbon3/p/5930803.html" target="_blank" rel="noopener">1.Linux下进程/程序网络带宽占用情况查看工具 – NetHogs</a></em><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://www.cnblogs.com/chaos-li/p/9779558.html" target="_blank" rel="noopener">2.Linux查看当前使用的网卡 以及 查看某进程使用的网络带宽情况 以及 端口占用的情况</a></p>
-<p>##Linux配置SWAP分区</p>
-<ul>
-<li>开启 SWAP</li>
-</ul>
-<p>1、创建8GB用于交换分区的文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=/mnt/swap bs=1M count=8192</span><br></pre></td></tr></table></figure></p>
+<h2 id="Linux配置SWAP分区"><a href="#Linux配置SWAP分区" class="headerlink" title="Linux配置SWAP分区"></a>Linux配置SWAP分区</h2><h3 id="开启-SWAP"><a href="#开启-SWAP" class="headerlink" title="开启 SWAP"></a>开启 SWAP</h3><p>1、创建8GB用于交换分区的文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># dd if=/dev/zero of=/mnt/swap bs=1M count=8192</span><br></pre></td></tr></table></figure></p>
 <p>注：block_size、number_of_block 大小可以自定义，比如 bs=1M count=1024 代表设置 1G 大小 SWAP 分区。</p>
 <p>2、设置交换分区文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkswap /mnt/swap</span><br></pre></td></tr></table></figure></p>
 <p>3、立即启用交换分区文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapon /mnt/swap</span><br></pre></td></tr></table></figure></p>
@@ -254,10 +284,7 @@
 <p>可以使用下述方法临时修改此参数，假设我们配置为空闲内存少于 20% 时才使用 SWAP 分区：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 20 &gt;/proc/sys/vm/swappiness</span><br></pre></td></tr></table></figure></p>
 <p>若需要永久修改此配置，在系统重启之后也生效的话，可以修改 <strong>/etc/sysctl.conf</strong> 文件，并增加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure></p>
 <p>修改为<strong>vm.swappiness=20</strong>,保存后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>关闭 SWAP</li>
-</ul>
-<p>当系统出现内存不足时，开启 SWAP 可能会因频繁换页操作，导致 IO 性能下降。如果要关闭 SWAP，可以采用如下方法。</p>
+<h3 id="关闭-SWAP"><a href="#关闭-SWAP" class="headerlink" title="关闭 SWAP"></a>关闭 SWAP</h3><p>当系统出现内存不足时，开启 SWAP 可能会因频繁换页操作，导致 IO 性能下降。如果要关闭 SWAP，可以采用如下方法。</p>
 <p>1、free -m 查询 SWAP 分区设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz canal-deployer-1.1.2]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           3790        2632         861           0         296         927</span><br><span class="line">Swap:          8191        1210        6981</span><br></pre></td></tr></table></figure></p>
 <p>2、使用命令 swapoff 关闭 SWAP，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#swapoff /mnt/swap</span><br></pre></td></tr></table></figure></p>
 <p>3、修改 <strong>/etc/fstab</strong>文件，删除或注释相关配置，取消 SWAP 的自动挂载：</p>
@@ -265,8 +292,22 @@
 <p>5、 swappiness 参数调整：</p>
 <p>可以使用下述方法临时修改此参数，这里配置为 0%：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/vm/swappiness  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf 文件，并增加以下内容：</span><br></pre></td></tr></table></figure></p>
 <h1 id="vim-etc-sysctl-conf"><a href="#vim-etc-sysctl-conf" class="headerlink" title="vim /etc/sysctl.conf"></a>vim /etc/sysctl.conf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">修改**vm.swappiness=0**</span><br></pre></td></tr></table></figure>
-<h1 id="sysctl-p"><a href="#sysctl-p" class="headerlink" title="sysctl -p"></a>sysctl -p</h1><p><code>`</code></p>
-<p><em>参考文档:<a href="https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF" target="_blank" rel="noopener">云服务器 ECS Linux SWAP 配置概要说明</a></em></p>
+<h1 id="sysctl-p"><a href="#sysctl-p" class="headerlink" title="sysctl -p"></a>sysctl -p</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">*参考文档:[云服务器 ECS Linux SWAP 配置概要说明](https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF)*</span><br><span class="line"></span><br><span class="line">## Linux下将指令后台运行、关闭、查看任务</span><br><span class="line">###1.&lt;kbd&gt;&amp;&lt;/kbd&gt;</span><br><span class="line">直接加到指令的后面，就可以将该条指令放到后台运行，不建议在还需要交互的指令上使用&amp;，会直接忽略（比如输入密码确认）</span><br><span class="line">- 运行java程序canal-receiver</span><br></pre></td></tr></table></figure>
+<p>#java -jar canal-receiver.jar start 1 &amp;    //执行一个java程序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###2.&lt;kbd&gt;Ctrl&lt;/kbd&gt; +&lt;kbd&gt;Z&lt;/kbd&gt;</span><br><span class="line"></span><br><span class="line">可以将一个正在前台执行的命令放到后台，并且处于暂停状态</span><br><span class="line">- 将本机上的/usr/local/frp_server/文件夹复制到39.98.41.26的/usr/local/目录下</span><br></pre></td></tr></table></figure></p>
+<p>#scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 此时复制开始，并占用当前界面，可以用&lt;kbd&gt;Ctrl&lt;/kbd&gt; +&lt;kbd&gt;Z&lt;/kbd&gt;放到后台</span><br></pre></td></tr></table></figure></p>
+<p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&amp;ensp;[命令号] + 状态    &amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp; 执行指令 </span><br><span class="line"></span><br><span class="line">###3.&lt;kbd&gt;jobs&lt;/dbd&gt;</span><br><span class="line"></span><br><span class="line">查看当前有多少在后台运行的命令</span><br><span class="line"></span><br><span class="line">jobs -l选项可显示所有任务的PID，jobs的状态可以是running, stopped, Terminated。但是如果任务被终止了（kill），shell 从当前的shell环境已知的列表中删除任务的进程标识。</span><br><span class="line"></span><br><span class="line">###4.&lt;kbd&gt;fg&lt;/kbd&gt;</span><br><span class="line">将后台中的命令调至前台继续运行。如果后台中有多个命令，可以用fg %jobnumber（是命令编号，不是进程号）将选中的命令调出。</span><br></pre></td></tr></table></figure></p>
+<h1 id="job-l-查看后台任务"><a href="#job-l-查看后台任务" class="headerlink" title="job -l               //查看后台任务"></a>job -l               //查看后台任务</h1><p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/</p>
+<p>#fg 2                 //调起scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/指令，并在前台运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###5.&lt;kbd&gt;bg&lt;/kbd&gt;</span><br><span class="line">将一个在后台暂停的命令，变成在后台继续执行。如果后台中有多个命令，可以用bg %jobnumber将选中的命令调出。</span><br><span class="line">- 查看后台任务</span><br></pre></td></tr></table></figure></p>
+<h1 id="job-l"><a href="#job-l" class="headerlink" title="job -l"></a>job -l</h1><p>[2]+  Stopped                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 调起scp -r /usr/local/frp_server/ root@39.98.41.26:/usr/local/指令，并在后台运行</span><br></pre></td></tr></table></figure></p>
+<p>#bg 2<br>[2]+ scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 确认状态</span><br></pre></td></tr></table></figure></p>
+<p>#jobs -l<br>[2]  24233 Running                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###6.&lt;kbd&gt;kill&lt;/kbd&gt;</span><br><span class="line">用法1：通过jobs命令查看job号（假设为num），然后执行kill %num</span><br></pre></td></tr></table></figure></p>
+<p>#jobs -l<br>[2]  24233 Running                 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/ &amp;</p>
+<p>#kill 24233<br>Killed by signal 15.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用法2：通过ps命令查看job的进程号（PID，假设为pid），然后执行kill pid</span><br><span class="line">*注：[ps命令详解](https://blog.csdn.net/freeking101/article/details/53444530)*</span><br></pre></td></tr></table></figure></p>
+<p>#ps -aux            //a:显示所有程序 u:以用户为主的格式来显示 x:显示所有程序，不以终端机来区分<br>root     24271  0.0  0.0  57700  2184 pts/0    S    11:53   0:00 scp -r /usr/local/frp_server/ <a href="mailto:root@39.98.41.26" target="_blank" rel="noopener">root@39.98.41.26</a>:/usr/local/</p>
+<p>#kill 24271<br>Killed by signal 15.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">###7.&lt;kbd&gt;nohup&lt;/kbd&gt;</span><br><span class="line"></span><br><span class="line">如果让程序始终在后台执行，即使关闭当前的终端也执行（之前的&amp;做不到），这时候需要nohup。该命令可以在你退出帐户/关闭终端之后继续运行相应的进程。关闭中断后，在另一个终端jobs已经无法看到后台跑得程序了，此时利用ps（进程查看命令）</span><br></pre></td></tr></table></figure></p>
+<p>#nohup java -jar canal-receiver.jar start 1<br><code>`</code></p>
+<p>###8.<kbd>Ctrl</kbd>+<kbd>C</kbd><br>前台进程的终止</p>
+<p><em>参考于:<a href="https://www.cnblogs.com/kaituorensheng/p/3980334.html" target="_blank" rel="noopener">linux后台运行和关闭、查看后台任务</a></em></p>
 
       
 
@@ -296,6 +337,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Devops</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -498,6 +550,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">canal</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Devops</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
