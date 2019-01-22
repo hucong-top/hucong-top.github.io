@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Devops | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta name="keywords" content="Devops">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Devops">
 <meta property="og:url" content="http://yoursite.com/2019/01/14/Devops/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
-<meta property="og:updated_time" content="2019-01-22T07:36:25.206Z">
+<meta property="og:updated_time" content="2019-01-22T07:39:20.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Devops">
-<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
 <meta name="twitter:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
@@ -196,6 +196,7 @@
 <li><a href="#%E7%9B%91%E6%B5%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%BD%91%E7%BB%9C%E7%8A%B6%E5%86%B5">监测服务器网络状况</a></li>
 <li><a href="#linux%E9%85%8D%E7%BD%AEswap%E5%88%86%E5%8C%BA">Linux配置SWAP分区</a><ul>
 <li><a href="#%E5%BC%80%E5%90%AF-swap">开启 SWAP</a></li>
+<li><a href="#%E5%85%B3%E9%97%AD-swap">关闭 SWAP</a></li>
 </ul>
 </li>
 <li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
@@ -283,6 +284,14 @@
 <p>可以使用下述方法临时修改此参数，假设我们配置为空闲内存少于 20% 时才使用 SWAP 分区：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 20 &gt;/proc/sys/vm/swappiness</span><br></pre></td></tr></table></figure></p>
 <p>若需要永久修改此配置，在系统重启之后也生效的话，可以修改 <strong>/etc/sysctl.conf</strong> 文件，并增加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure></p>
 <p>修改为<strong>vm.swappiness=20</strong>,保存后输入<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure></p>
+<h3 id="关闭-SWAP"><a href="#关闭-SWAP" class="headerlink" title="关闭 SWAP"></a>关闭 SWAP</h3><p>当系统出现内存不足时，开启 SWAP 可能会因频繁换页操作，导致 IO 性能下降。如果要关闭 SWAP，可以采用如下方法。</p>
+<p>1、free -m 查询 SWAP 分区设置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@izj6c47bc02i5akvuyb8xzz target]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           1839         506          62          24        1270        1137</span><br><span class="line">Swap:          8191           0        8191</span><br></pre></td></tr></table></figure></p>
+<p>2、使用命令 swapoff 关闭 SWAP，比如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">swapoff /mnt/swap</span><br></pre></td></tr></table></figure></p>
+<p>3、修改 /etc/fstab 文件，删除或注释相关配置，取消 SWAP 的自动挂载：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># /etc/fstab</span><br><span class="line"># Created by anaconda on Fri Aug 18 03:51:14 2017</span><br><span class="line">#</span><br><span class="line"># Accessible filesystems, by reference, are maintained under &apos;/dev/disk&apos;</span><br><span class="line"># See man pages fstab(5), findfs(8), mount(8) and/or blkid(8) for more info</span><br><span class="line">#</span><br><span class="line">UUID=59d9ca7b-4f39-4c0c-9334-c56c182076b5 /                       ext4    defaults        1 1</span><br><span class="line">#/mnt/swap swap swap defaults 0 0</span><br></pre></td></tr></table></figure></p>
+<p>4、  通过 free -m  确认 SWAP 已经关闭。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@izj6c47bc02i5akvuyb8xzz target]# free -m</span><br><span class="line">              total        used        free      shared  buff/cache   available</span><br><span class="line">Mem:           1839         506          62          24        1270        1137</span><br><span class="line">Swap:             0           0           0</span><br></pre></td></tr></table></figure></p>
+<p>5、 swappiness 参数调整：<br>可以使用下述方法临时修改此参数，这里配置为 0%：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo 0 &gt;/proc/sys/vm/swappiness</span><br></pre></td></tr></table></figure></p>
+<p>若需要永久修改此配置，在系统重启之后也生效的话，可以修改 /etc/sysctl.conf 文件，并增加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/sysctl.conf</span><br></pre></td></tr></table></figure></p>
+<p>设置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure></p>
 <p><em>参考文档:<a href="https://help.aliyun.com/knowledge_detail/42534.html?spm=5176.11065259.1996646101.searchclickresult.105a3d5b0yIybF" target="_blank" rel="noopener">云服务器 ECS Linux SWAP 配置概要说明</a></em></p>
 <h2 id="Linux下将指令后台运行、关闭、查看任务"><a href="#Linux下将指令后台运行、关闭、查看任务" class="headerlink" title="Linux下将指令后台运行、关闭、查看任务"></a>Linux下将指令后台运行、关闭、查看任务</h2><p>###1.<kbd>&amp;</kbd><br>直接加到指令的后面，就可以将该条指令放到后台运行，不建议在还需要交互的指令上使用&amp;，会直接忽略（比如输入密码确认）</p>
 <ul>
