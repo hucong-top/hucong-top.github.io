@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Devops | MarkDown·Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+  <meta name="description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务 升级Linux下的python版本 安装指定版本的python 更新python环境配置 附：常见问题     #服务器运维笔记">
 <meta name="keywords" content="Devops">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Devops">
 <meta property="og:url" content="http://yoursite.com/2019/01/14/Devops/index.html">
 <meta property="og:site_name" content="MarkDown·Blog">
-<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta property="og:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务 升级Linux下的python版本 安装指定版本的python 更新python环境配置 附：常见问题     #服务器运维笔记">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
-<meta property="og:updated_time" content="2019-01-22T07:39:20.948Z">
+<meta property="og:updated_time" content="2019-02-22T06:10:49.843Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Devops">
-<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务   #服务器运维笔记">
+<meta name="twitter:description" content="@hucong 目录导航    查看内存的使用量方法 服务器之间的文件传输 正常拷贝 免密拷贝   监测服务器网络状况 Linux配置SWAP分区 开启 SWAP 关闭 SWAP   Linux下将指令后台运行、关闭、查看任务 升级Linux下的python版本 安装指定版本的python 更新python环境配置 附：常见问题     #服务器运维笔记">
 <meta name="twitter:image" content="https://github-res.oss-cn-shenzhen.aliyuncs.com/htop.png">
   
     <link rel="alternative" href="/atom.xml" title="MarkDown·Blog" type="application/atom+xml">
@@ -200,6 +200,12 @@
 </ul>
 </li>
 <li><a href="#linux%E4%B8%8B%E5%B0%86%E6%8C%87%E4%BB%A4%E5%90%8E%E5%8F%B0%E8%BF%90%E8%A1%8C%E5%85%B3%E9%97%AD%E6%9F%A5%E7%9C%8B%E4%BB%BB%E5%8A%A1">Linux下将指令后台运行、关闭、查看任务</a></li>
+<li><a href="#%E5%8D%87%E7%BA%A7linux%E4%B8%8B%E7%9A%84python%E7%89%88%E6%9C%AC">升级Linux下的python版本</a><ul>
+<li><a href="#%E5%AE%89%E8%A3%85%E6%8C%87%E5%AE%9A%E7%89%88%E6%9C%AC%E7%9A%84python">安装指定版本的python</a></li>
+<li><a href="#%E6%9B%B4%E6%96%B0python%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE">更新python环境配置</a></li>
+<li><a href="#%E9%99%84%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">附：常见问题</a></li>
+</ul>
+</li>
 </ul>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 <p>#服务器运维笔记<br><!-- toc --><br><a id="more"></a> </p>
@@ -336,6 +342,27 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#nohup java -jar canal-receiver.jar start 1</span><br></pre></td></tr></table></figure>
 <p>###8.<kbd>Ctrl</kbd>+<kbd>C</kbd><br>前台进程的终止</p>
 <p><em>参考于:<a href="https://www.cnblogs.com/kaituorensheng/p/3980334.html" target="_blank" rel="noopener">linux后台运行和关闭、查看后台任务</a></em></p>
+<h2 id="升级Linux下的python版本"><a href="#升级Linux下的python版本" class="headerlink" title="升级Linux下的python版本"></a>升级Linux下的python版本</h2><h3 id="安装指定版本的python"><a href="#安装指定版本的python" class="headerlink" title="安装指定版本的python"></a>安装指定版本的python</h3><p> <strong>1.安装指定版本的python</strong><br>以python-3.5.4为例，在/usr/local目录下创建python目录，将python安装到此目录下,原版本为2.7<br>创建文件夹</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir /usr/local/python3.5</span><br></pre></td></tr></table></figure>
+<p>下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://www.python.org/ftp/python/3.5.4/Python-3.5.4.tgz</span><br></pre></td></tr></table></figure>
+<p>解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar xvf Python-3.5.4.tgz</span><br><span class="line">cd python-3.5.4</span><br></pre></td></tr></table></figure>
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">./configure --prefix=/usr/local/python3.5     //安装到/usr/local/python3.5这个目录中</span><br><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<p>安装后/usr/local/python3.5的目录层次</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz python3.5]# ll</span><br><span class="line">总用量 20268</span><br><span class="line">drwxr-xr-x  2 root     root         4096 2月  21 20:57 bin</span><br><span class="line">drwxr-xr-x  3 root     root         4096 2月  21 20:45 include</span><br><span class="line">drwxr-xr-x  4 root     root         4096 2月  21 20:45 lib</span><br><span class="line">drwxr-xr-x 17 tempuser tempuser     4096 2月  21 20:44 Python-3.5.4</span><br><span class="line">-rw-r--r--  1 root     root     20733411 2月  21 20:29 Python-3.5.4.tgz</span><br><span class="line">drwxr-xr-x  3 root     root         4096 2月  21 20:45 share</span><br></pre></td></tr></table></figure>
+<h3 id="更新python环境配置"><a href="#更新python环境配置" class="headerlink" title="更新python环境配置"></a>更新python环境配置</h3><p><strong>2.将/usr/bin目录下的原来的Python的软连接重新更名</strong><br>保险起见先将/usr/bin下原版本的python备份(按实际文件路径而定)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/bin/python /usr/bin/python.bk</span><br><span class="line">cp /usr/bin/python2.7 /usr/bin/python2,7.bk</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv /usr/bin/python /usr/bin/python2.7</span><br></pre></td></tr></table></figure>
+<p>改完后在访问python就会出现  -bash: /usr/bin/python: 没有那个文件或目录</p>
+<p><strong>3、将新版本大的python的软连接增加到/usr/bin目录下</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/local/python3.5/bin/python3.5 /usr/bin/python</span><br></pre></td></tr></table></figure></p>
+<p><strong>4、将版本python3.5命令加入环境变量</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p>文末添加 <strong>export PATH=$PATH:/usr/local/python3.5/bin</strong><br>文件生效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure></p>
+<p><strong>5、检查python版本</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@iz8vbia7opzm9l175id9izz bin]# python -V</span><br><span class="line">Python 3.5.4</span><br></pre></td></tr></table></figure></p>
+<h3 id="附：常见问题"><a href="#附：常见问题" class="headerlink" title="附：常见问题"></a>附：常见问题</h3><p>1.pip指令异常：<br><strong>-bash: /usr/bin/pip: /usr/bin/python2: 坏的解释器: 没有那个文件或目录</strong></p>
+<p>说明/usr/bin/python2引用的pip路径有误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/bin/pip</span><br></pre></td></tr></table></figure></p>
+<p>发现原本第一行为 <strong>#!/usr/bin/python2</strong> 不是安装过程指定的python，手动修改为 <strong>#!/usr/bin/python2</strong><br>问题解决</p>
 
       
 
